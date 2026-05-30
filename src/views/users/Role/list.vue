@@ -38,7 +38,7 @@
               <tr v-for="role in roles" :key="role.id">
                 <td>{{ role.id }}</td>
                 <td>{{ role.name }}</td>
-                <td v-if="!role.is_system">
+                <td v-if="!Number(role.is_system)">
                   <router-link :to="`/users/roles/${role.id}/edit`" class="btn btn-sm btn-warning me-2">
                     <i class="bi bi-pen"></i>
                     <span> ویرایش</span>
