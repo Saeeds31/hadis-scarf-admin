@@ -28,7 +28,7 @@
         <b-col cols="12" md="6">
           <b-form-group label="تصویر اصلی" label-for="main_image">
             <VueFileAgent @update:raw-model-value="imageLoaded" :raw-model-value="oldImage" :maxFiles="1"
-              accept=".pdf,.jpg,.png" theme="grid" deletable sortable />
+              accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable />
 
             <small v-if="errors.main_image" class="text-danger">{{ errors.main_image[0] }}</small>
           </b-form-group>
@@ -39,7 +39,7 @@
           <b-form-group label="آیکن" label-for="icon">
 
             <VueFileAgent @update:raw-model-value="imageLoaded1" :raw-model-value="oldImage1" :maxFiles="1"
-              accept=".pdf,.jpg,.png" theme="grid" deletable sortable />
+              accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable />
 
             <small v-if="errors.icon" class="text-danger">{{ errors.icon[0] }}</small>
           </b-form-group>

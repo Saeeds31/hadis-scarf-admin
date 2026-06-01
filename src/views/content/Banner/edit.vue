@@ -26,7 +26,7 @@
         <b-col cols="12" md="6">
           <b-form-group label="تصویر دسکتاپ" label-for="image_desktop">
             <VueFileAgent @update:raw-model-value="imageLoaded" :raw-model-value="oldImage" :maxFiles="1"
-              accept=".pdf,.jpg,.png" theme="grid" deletable sortable />
+              accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable />
             <small v-if="errors.image_desktop" class="text-danger">{{ errors.image_desktop[0] }}</small>
           </b-form-group>
         </b-col>
@@ -35,7 +35,7 @@
         <b-col cols="12" md="6">
           <b-form-group label="تصویر موبایل" label-for="image_mobile">
             <VueFileAgent @update:raw-model-value="imageLoaded1" :raw-model-value="oldImage1" :maxFiles="1"
-              accept=".pdf,.jpg,.png" theme="grid" deletable sortable />
+              accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable />
 
             <small v-if="errors.image_mobile" class="text-danger">{{ errors.image_mobile[0] }}</small>
           </b-form-group>

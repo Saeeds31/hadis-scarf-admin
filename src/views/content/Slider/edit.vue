@@ -32,7 +32,7 @@
       <div class="col-md-4">
         <label class="form-label">انتخاب تصویر</label>
         <VueFileAgent @update:raw-model-value="imageLoaded" :raw-model-value="oldImage" :maxFiles="1"
-          accept=".pdf,.jpg,.png" theme="grid" deletable sortable>
+          accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable>
         </VueFileAgent>
 
         <small v-if="errors.image" class="text-danger">{{ errors.image[0] }}</small>

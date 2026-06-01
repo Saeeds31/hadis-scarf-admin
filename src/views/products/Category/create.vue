@@ -27,7 +27,7 @@
         <!-- Main Image -->
         <b-col cols="12" md="6">
           <b-form-group label="تصویر اصلی" label-for="main_image">
-            <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png" theme="grid" deletable sortable />
+            <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable />
             <small v-if="errors.main_image" class="text-danger">{{ errors.main_image[0] }}</small>
           </b-form-group>
         </b-col>
@@ -35,7 +35,7 @@
         <!-- Icon -->
         <b-col cols="12" md="6">
           <b-form-group label="آیکن" label-for="icon">
-            <VueFileAgent @select="imageLoaded1" :maxFiles="1" accept=".pdf,.jpg,.png" theme="grid" deletable
+            <VueFileAgent @select="imageLoaded1" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable
               sortable />
             <small v-if="errors.icon" class="text-danger">{{ errors.icon[0] }}</small>
           </b-form-group>

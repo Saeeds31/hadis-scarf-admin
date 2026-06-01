@@ -23,7 +23,7 @@
       <b-col cols="12" md="6">
         <b-form-group label="تصویر (URL)">
           <VueFileAgent @update:raw-model-value="imageLoaded" :raw-model-value="oldImage" :maxFiles="1"
-            accept=".pdf,.jpg,.png" theme="grid" deletable sortable>
+            accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable>
           </VueFileAgent>
           <b-form-invalid-feedback v-if="errors.icon">{{ errors.icon[0] }}</b-form-invalid-feedback>
         </b-form-group>

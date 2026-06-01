@@ -31,7 +31,7 @@ axios.interceptors.response.use(
 <template>
   <div class="d-flex w-100">
     <Sidebar v-if="route.path != '/login'" />
-    <div class="flex-grow-1" id="mainContent">
+    <div class="flex-grow-1" id="mainContent" :class="{ 'mr-0': route.path == '/login' }">
       <Toolbar v-if="route.path != '/login'" />
       <router-view></router-view>
     </div>
@@ -44,5 +44,9 @@ div#mainContent {
   flex-direction: column;
   min-height: 100vh;
   margin-right: 250px;
+}
+
+div#mainContent.mr-0 {
+  margin-right: 0;
 }
 </style>
