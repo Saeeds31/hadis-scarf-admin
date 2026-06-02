@@ -75,7 +75,7 @@
                   {{ attributeType == 'code' ? "رنگ" : form.id ? "آپلود تصویر جدید" : "انتخاب تصویر" }} </label>
                 <input v-if="attributeType == 'code'" v-model="form.extra_value" type="color" class="form-control"
                   placeholder="مقدار ویژگی را وارد کنید" />
-                <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable
+                <VueFileAgent v-else-if="attributeType == 'image'" @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable
                   sortable />
               </div>
 
