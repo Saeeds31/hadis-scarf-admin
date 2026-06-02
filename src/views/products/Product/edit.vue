@@ -78,7 +78,7 @@
             <div class="col-md-12 mb-3">
               <label class="form-label">تصاویر</label>
               <VueFileAgent @update:rawModelValue="imageDeleted" @select="imagesLoaded"
-                v-model:rawModelValue="oldImages" :multiple="true" accept=".jpg,.png,.pdf" theme="grid" deletable
+                v-model:rawModelValue="oldImages" :multiple="true" accept=".jpg,.png,.webp" theme="grid" deletable
                 sortable />
               <span v-if="errors.step1.images" class="text-danger">{{ errors.step1.images[0] }}</span>
             </div>

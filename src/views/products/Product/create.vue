@@ -83,7 +83,7 @@
             </div>
             <div class="col-md-12 mb-3">
               <label class="form-label">تصاویر</label>
-              <VueFileAgent @select="imagesLoaded" :multiple="true" accept=".jpg,.png,.pdf" theme="grid" deletable
+              <VueFileAgent @select="imagesLoaded" :multiple="true" accept=".jpg,.png,.webp" theme="grid" deletable
                 sortable />
               <span v-if="errors.step1.images" class="text-danger">{{ errors.step1.images[0] }}</span>
             </div>
