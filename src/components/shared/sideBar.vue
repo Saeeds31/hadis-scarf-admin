@@ -69,7 +69,7 @@ const openSubmenu = ref(null);
 // بررسی می‌کنه که آیا لینک فعلی با مسیر داده شده مطابقت داره
 const isActiveRoute = (link) => {
   if (!link) return false;
-  return route.path === link || route.path.startsWith(link + '/');
+  return route.path === link;
 };
 
 // بررسی می‌کنه که آیا زیرمنوی باز شده شامل صفحه فعال هست
