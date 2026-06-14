@@ -166,8 +166,8 @@
         <div class="row formSetp2">
           <div class="col-md-12 mb-3">
             <label>ویژگی ها:</label>
-            <Treeselect v-model="selectedAttibutes" :multiple="true" :options="attributes"
-              :normalizer="attributeNormalizer" />
+            <Treeselect v-if="attributes && attributes.length" v-model="selectedAttibutes" :multiple="true"
+              :options="attributes" :normalizer="attributeNormalizer" />
           </div>
           <template v-for="attributeId in selectedAttibutes" :key="attributeId">
             <div class="col-md-12 mb-3">
@@ -258,18 +258,19 @@ import { toast } from 'vue3-toastify'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdmin } from '@/stores/modules/admin';
+
 const store = useAdmin();
 const checkPermission = store.checkPermission;
 let route = useRoute();
 let router = useRouter();
-const productId = route.params.id // آی‌دی محصول مورد ویرایش
-const currentStep = ref(0)
-const product = ref(null)
+const productId = route.params.id;
+const currentStep = ref(0);
+const product = ref(null);
 const steps = ref([
   { label: 'محصول', icon: 'bi bi-file-text', enabled: true, completed: false },
   { label: 'تنوع ها', icon: 'bi bi-palette', enabled: false, completed: false },
   { label: 'مشخصات', icon: 'bi bi-table', enabled: false, completed: false },
-])
+]);
 let loading = ref(false);
 
 let mainVideoDeleted = ref(false);
@@ -278,64 +279,173 @@ const form = ref({
   title: '', images: [], description: '', categories: "", main_image: "",
   meta_title: '', meta_description: '', status: '', discount_value: '',
   discount_type: '', barcode: '', sku: '', stock: '', price: '', video: ""
-})
+});
 let firstInit = ref(true);
 let deleted_images = ref([]);
-let backupImages = ref([])
-let oldMainImage = ref([])
-let oldMainVideo = ref([])
-let oldImages = ref([])
-let attributeValue = reactive({})
-const errors = ref({ step1: {}, step2: {} })
-const categoryOptions = ref([])
-const attributes = ref([])
+let backupImages = ref([]);
+let oldMainImage = ref([]);
+let oldMainVideo = ref([]);
+let oldImages = ref([]);
+let attributeValue = reactive({});
+const errors = ref({ step1: {}, step2: {} });
+const categoryOptions = ref([]);
+const attributes = ref([]);
 const variantCombinations = ref([]);
 const backupVariantCombinations = ref([]);
-let selectedAttibutes = ref([])
-const specification = ref([])
+let selectedAttibutes = ref([]);
+const specification = ref([]);
 const selectedSpecification = ref([]);
 const selectedSpecificationValues = reactive({});
-const normalizer = node => ({ id: node.id, label: node.title, children: node.children })
-const attributeNormalizer = node => ({ id: node.id, label: node.name })
-const attributeValuesNormalizer = node => ({ id: node.id, label: node.value })
-const specificationNormalizer = node => ({ id: node.id, label: node.title, values: node.values })
+
+const normalizer = node => ({ id: node.id, label: node.title, children: node.children });
+const attributeNormalizer = node => ({ id: node.id, label: node.name });
+const attributeValuesNormalizer = node => ({ id: node.id, label: node.value });
+const specificationNormalizer = node => ({ id: node.id, label: node.title, values: node.values });
 
 function attrName(id) {
-  const attr = attributes.value.find(a => a.id == id)
-  return attr ? attr.name : "گزینه ها"
+  const attr = attributes.value.find(a => a.id == id);
+  return attr ? attr.name : "گزینه ها";
+}
+
+// تابع بازگشتی برای تولید ترکیبات با بیش از 2 ویژگی
+function generateCombinationsRecursive(keys, depth, currentValues) {
+  if (depth === keys.length) {
+    const uid = `uid_${currentValues.map(v => v.id).join('_')}`;
+    return [{
+      uid: uid,
+      values: [...currentValues]
+    }];
+  }
+  
+  let combinations = [];
+  for (let value of attributeValue[keys[depth]]) {
+    const newValues = [...currentValues, { id: value.id, value: value.value }];
+    combinations.push(...generateCombinationsRecursive(keys, depth + 1, newValues));
+  }
+  return combinations;
+}
+
+function generateCombinations() {
+  // فقط ویژگی‌هایی که انتخاب شده و مقدار دارند
+  const keys = Object.keys(attributeValue).filter(key => 
+    selectedAttibutes.value.includes(Number(key)) && 
+    attributeValue[key] && 
+    attributeValue[key].length
+  );
+  
+  if (!keys.length) {
+    variantCombinations.value = [];
+    return;
+  }
+
+  // تولید ترکیبات بر اساس ویژگی‌های انتخاب شده
+  let combinations = [];
+  
+  if (keys.length === 1) {
+    // یک ویژگی
+    combinations = attributeValue[keys[0]].map(val => ({
+      uid: `uid_${val.id}`,
+      values: [{ id: val.id, value: val.value }]
+    }));
+  } else if (keys.length === 2) {
+    // دو ویژگی
+    for (let first of attributeValue[keys[0]]) {
+      for (let second of attributeValue[keys[1]]) {
+        combinations.push({
+          uid: `uid_${first.id}_${second.id}`,
+          values: [
+            { id: first.id, value: first.value },
+            { id: second.id, value: second.value }
+          ]
+        });
+      }
+    }
+  } else {
+    // سه ویژگی یا بیشتر
+    combinations = generateCombinationsRecursive(keys, 0, []);
+  }
+
+  // نگهداری مقادیر دستی کاربر
+  const newVariants = combinations.map(combo => {
+    // جستجو در ترکیبات فعلی برای حفظ مقادیر وارد شده
+    let existingVariant = variantCombinations.value.find(v => v.uid === combo.uid);
+    
+    if (existingVariant) {
+      // استفاده از مقادیر موجود (SKU، قیمت، موجودی حفظ می‌شود)
+      return {
+        ...existingVariant,
+        values: combo.values // اطمینان از درستی مقادیر ویژگی‌ها
+      };
+    } else {
+      // ایجاد ترکیب جدید
+      return {
+        id: "",
+        sku: "",
+        price: "",
+        stock: "",
+        uid: combo.uid,
+        values: combo.values
+      };
+    }
+  });
+  
+  variantCombinations.value = newVariants;
+}
+
+// به‌روزرسانی مقادیر ویژگی‌های حذف شده
+function cleanupAttributeValues() {
+  for (const keyId in attributeValue) {
+    if (!selectedAttibutes.value.includes(Number(keyId))) {
+      delete attributeValue[keyId];
+    }
+  }
 }
 
 watch(() => attributeValue, () => {
-  if (firstInit.value == false) {
-    generateCombinations()
+  if (firstInit.value == false && selectedAttibutes.value.length > 0) {
+    generateCombinations();
   }
-}, { deep: true })
+}, { deep: true });
+
+watch(() => selectedAttibutes.value, (newValue, oldValue) => {
+  if (firstInit.value == true) return;
+  
+  // حذف ویژگی‌هایی که دیگر انتخاب نشده‌اند
+  cleanupAttributeValues();
+  
+  // بازتولید ترکیبات
+  if (newValue.length > 0) {
+    generateCombinations();
+  } else {
+    variantCombinations.value = [];
+  }
+}, { deep: true });
 
 onMounted(async () => {
-  await loadCategories()
-  await loadAttributes()
+  await loadCategories();
+  await loadAttributes();
   await loadSpecification();
-  await loadProduct()
-})
+  await loadProduct();
+});
+
 async function loadSpecification() {
-  const res = await axios.get('/all-specification')
+  const res = await axios.get('/all-specification');
   specification.value = res.data.data;
-
-
 }
+
 async function loadCategories() {
-  const res = await axios.get('/categories')
-  categoryOptions.value = res.data.data
+  const res = await axios.get('/categories');
+  categoryOptions.value = res.data.data;
 }
 
 async function loadAttributes() {
-  const res = await axios.get('/attributes')
-  attributes.value = res.data.data
+  const res = await axios.get('/attributes');
+  attributes.value = res.data.data;
 }
 
 async function loadProduct() {
-  const res = await axios.get(`/products/${productId}`)
-  product.value = res.data
+  const res = await axios.get(`/products/${productId}`);
+  product.value = res.data;
   Object.assign(form.value, {
     title: product.value.title,
     description: product.value.description,
@@ -349,62 +459,69 @@ async function loadProduct() {
     sku: product.value.sku,
     stock: product.value.stock,
     price: product.value.price,
-  })
+  });
+  
   backupImages.value = product.value.images;
+  
   if (product.value.video) {
-    oldMainVideo.value =
-      [{
-        name: product.value.video.split('/').pop(),
-        size: 0,
-        type: 'video/*',
-        ext: product.value.video.split('.').pop(),
-        url: `${baseImageAddress}${product.value.video}`,
-      }];
+    oldMainVideo.value = [{
+      name: product.value.video.split('/').pop(),
+      size: 0,
+      type: 'video/*',
+      ext: product.value.video.split('.').pop(),
+      url: `${baseImageAddress}${product.value.video}`,
+    }];
   }
+  
   if (product.value.main_image) {
-    oldMainImage.value =
-      [{
-        name: product.value.main_image.split('/').pop(),
-        size: 0,
-        type: 'image/jpeg',
-        ext: product.value.main_image.split('.').pop(),
-        url: `${baseImageAddress}${product.value.main_image}`,
-      }];
+    oldMainImage.value = [{
+      name: product.value.main_image.split('/').pop(),
+      size: 0,
+      type: 'image/jpeg',
+      ext: product.value.main_image.split('.').pop(),
+      url: `${baseImageAddress}${product.value.main_image}`,
+    }];
   }
+  
   if (product.value.images && product.value.images.length) {
     let images = [];
     product.value.images.forEach((img) => {
-      images.push(
-        {
-          id: img.id,
-          name: img.path.split('/').pop(),
-          size: 0,
-          type: 'image/jpeg',
-          ext: img.path.split('.').pop(),
-          url: `${baseImageAddress}${img.path}`,
-        }
-      )
-    })
+      images.push({
+        id: img.id,
+        name: img.path.split('/').pop(),
+        size: 0,
+        type: 'image/jpeg',
+        ext: img.path.split('.').pop(),
+        url: `${baseImageAddress}${img.path}`,
+      });
+    });
     oldImages.value = images;
   }
-  steps.value[0].completed = true
-  steps.value[1].enabled = true
-  steps.value[2].enabled = true
+  
+  steps.value[0].completed = true;
+  steps.value[1].enabled = true;
+  steps.value[2].enabled = true;
 
-  if (product.value.variants) {
-    selectedAttibutes.value = []
-    variantCombinations.value = []
-    await product.value.variants.forEach(v => {
+  // بارگذاری واریانت‌های موجود
+  if (product.value.variants && product.value.variants.length) {
+    selectedAttibutes.value = [];
+    variantCombinations.value = [];
+    
+    product.value.variants.forEach(v => {
       let uid = "uid";
       v.values.forEach(val => {
         uid += `_${val.id}`;
-        if (!selectedAttibutes.value.includes(val.attribute_id)) selectedAttibutes.value.push(val.attribute_id)
-        if (!attributeValue[val.attribute_id]) attributeValue[val.attribute_id] = [];
-        if (attributeValue[val.attribute_id].findIndex(av => av.id == val.id) == -1) {
-          attributeValue[val.attribute_id].push({ id: val.id, value: val.value })
-
+        if (!selectedAttibutes.value.includes(Number(val.attribute_id))) {
+          selectedAttibutes.value.push(Number(val.attribute_id));
         }
-      })
+        if (!attributeValue[val.attribute_id]) {
+          attributeValue[val.attribute_id] = [];
+        }
+        if (attributeValue[val.attribute_id].findIndex(av => av.id == val.id) === -1) {
+          attributeValue[val.attribute_id].push({ id: val.id, value: val.value });
+        }
+      });
+      
       variantCombinations.value.push({
         price: v.price,
         uid: uid,
@@ -412,203 +529,195 @@ async function loadProduct() {
         sku: v.sku,
         stock: v.stock,
         values: v.values.map(val => ({ id: val.id, value: val.value }))
-      })
-    })
-    backupVariantCombinations.value = variantCombinations.value;
+      });
+    });
+    
+    backupVariantCombinations.value = JSON.parse(JSON.stringify(variantCombinations.value));
     firstInit.value = false;
   }
 
-  if (product.value.specifications) {
+  // بارگذاری مشخصات موجود
+  if (product.value.specifications && product.value.specifications.length) {
     product.value.specifications.forEach((item) => {
-      selectedSpecification.value.push(item)
+      selectedSpecification.value.push(item);
       selectedSpecificationValues[item.id] = item.values;
-    })
-    console.log(selectedSpecification.value, selectedSpecificationValues);
+    });
   }
 }
 
-function generateCombinations() {
-  let newVariants = [];
-  const keys = Object.keys(attributeValue)
-  if (!keys.length) return
-  if (
-    attributeValue[keys[0]] &&
-    attributeValue[keys[0]].length &&
-    attributeValue[keys[1]] &&
-    attributeValue[keys[1]].length) {
-    // دو ویژگی
-    for (let f of attributeValue[keys[0]]) {
-      for (let l of attributeValue[keys[1]]) {
-        let obj = {
-          id: "",
-          sku: "",
-          price: "",
-          stock: "", values: [{ id: f.id, value: f.value }, { id: l.id, value: l.value }]
-        };
-        obj.uid = `uid_${f.id}_${l.id}`;
-        newVariants.push(obj)
-      }
-    }
-  } else {
-    // یک وِیژگی
-    let list = [];
-    if (attributeValue[keys[0]] && attributeValue[keys[0]].length) {
-      list = attributeValue[keys[0]]
-    } else if (attributeValue[keys[1]] && attributeValue[keys[1]].length) {
-      list = attributeValue[keys[1]]
-    }
-    if (list.length) {
-      for (let f of list) {
-        let obj = {
-          sku: "",
-          price: "",
-          id: "",
-          values: [{ id: f.id, value: f.value }],
-          stock: ""
-        };
-        obj.uid = `uid_${f.id}`
-        newVariants.push(obj)
-      }
-    }
-  }
-  newVariants = newVariants.map(
-    (newVariant) => {
-      let finded = backupVariantCombinations.value.find((oldVariant) => oldVariant.uid == newVariant.uid);
-      if (finded) {
-        return finded;
-      } else {
-        return newVariant;
-      }
-    }
-  );
-  variantCombinations.value = [...newVariants];
+function imageLoaded(files) { 
+  form.value.main_image = files[0]?.file; 
 }
 
-function imageLoaded(files) { form.value.main_image = files[0].file }
 function imagesLoaded(files) {
-  form.value.images = files.map(f => f.file)
+  form.value.images = files.map(f => f.file);
 }
-function videoLoaded(files) { form.value.video = files[0].file }
+
+function videoLoaded(files) { 
+  form.value.video = files[0]?.file; 
+}
+
 function imageDeleted(files) {
-  backupImages.value.forEach(
-    (oldimg, index) => {
-      let finded = files.find((newImg) => newImg.id == oldimg.id);
-      if (!finded) {
-        deleted_images.value.push(oldimg.id);
-        backupImages.value.splice(index, 1)
-      }
+  backupImages.value.forEach((oldimg, index) => {
+    let finded = files.find((newImg) => newImg.id == oldimg.id);
+    if (!finded) {
+      deleted_images.value.push(oldimg.id);
+      backupImages.value.splice(index, 1);
     }
-  );
+  });
 }
+
 function changeMainVideo() {
   if (!mainVideoDeleted.value) {
-    mainVideoDeleted.value = true
+    mainVideoDeleted.value = true;
   }
 }
+
 function changeMainImage() {
   if (!mainImageDeleted.value) {
     mainImageDeleted.value = true;
   }
 }
+
 async function saveStep1() {
-  errors.value.step1 = {}
+  errors.value.step1 = {};
   loading.value = true;
+  
   try {
-    const formData = new FormData()
+    const formData = new FormData();
     Object.keys(form.value).forEach(key => {
       if (key === 'images') {
-        form.value.images.forEach(img => formData.append("images[]", img))
+        form.value.images.forEach(img => formData.append("images[]", img));
       }
       else if (key == "video") {
         if (mainVideoDeleted.value) {
           if (form.value.video) {
-            formData.append(key, form.value.video)
+            formData.append(key, form.value.video);
           }
-        } else {
-          formData.append(key, product.value.video)
+        } else if (product.value.video) {
+          formData.append(key, product.value.video);
         }
       }
       else if (key == "main_image") {
         if (mainImageDeleted.value) {
           if (form.value.main_image) {
-            formData.append(key, form.value.main_image)
+            formData.append(key, form.value.main_image);
           }
-        } else {
-          formData.append(key, product.value.main_image)
+        } else if (product.value.main_image) {
+          formData.append(key, product.value.main_image);
         }
       }
       else if (key != "categories" && form.value[key]) {
-        formData.append(key, form.value[key] ?? "")
+        formData.append(key, form.value[key] ?? "");
       }
-    })
-    form.value.categories.forEach(catId => formData.append("categories[]", catId))
+    });
+    
+    if (form.value.categories && form.value.categories.length) {
+      form.value.categories.forEach(catId => formData.append("categories[]", catId));
+    }
+    
     if (deleted_images.value.length) {
       deleted_images.value.forEach(id => {
-        formData.append("deleted_images[]", id)
-      })
-    };
-    formData.append("_method", "PUT")
-    const res = await axios.post(`/products/${productId}`, formData)
-    product.value = res.data
-    steps.value[0].completed = true
-    steps.value[1].enabled = true
-    steps.value[2].enabled = true
-    toast.success('مرحله اول با موفقیت بروزرسانی شد!')
+        formData.append("deleted_images[]", id);
+      });
+    }
+    
+    formData.append("_method", "PUT");
+    const res = await axios.post(`/products/${productId}`, formData);
+    product.value = res.data;
+    steps.value[0].completed = true;
+    steps.value[1].enabled = true;
+    steps.value[2].enabled = true;
+    toast.success('مرحله اول با موفقیت بروزرسانی شد!');
   } catch (e) {
-    if (e.response?.data?.errors) errors.value.step1 = e.response.data.errors
-    toast.error('خطا در ذخیره مرحله اول')
+    if (e.response?.data?.errors) errors.value.step1 = e.response.data.errors;
+    toast.error('خطا در ذخیره مرحله اول');
   } finally {
     loading.value = false;
   }
 }
 
 async function saveStep2() {
-  errors.value.step2 = {}
-  if (!variantCombinations.value.length) return
-  const formData = new FormData()
-  formData.append('product_id', product.value.id)
-  variantCombinations.value.forEach((v, index) => {
-    formData.append(`variants[${index}][id]`, v.id)
-    formData.append(`variants[${index}][sku]`, v.sku)
-    formData.append(`variants[${index}][price]`, v.price)
-    formData.append(`variants[${index}][stock]`, v.stock ?? 0)
-    v.values.forEach(AV => formData.append(`variants[${index}][values][]`, AV.id))
-  })
+  errors.value.step2 = {};
+  
+  if (!variantCombinations.value.length) {
+    toast.warning('هیچ تنوعی برای ذخیره وجود ندارد');
+    return;
+  }
+  
+  // فیلتر کردن ترکیبات معتبر
+  const validVariants = variantCombinations.value.filter(v => 
+    v.values && v.values.length > 0
+  );
+  
+  if (!validVariants.length) {
+    toast.warning('هیچ ترکیب معتبری برای ذخیره وجود ندارد');
+    return;
+  }
+  
+  const formData = new FormData();
+  formData.append('product_id', product.value.id);
+  
+  validVariants.forEach((v, index) => {
+    formData.append(`variants[${index}][id]`, v.id || '');
+    formData.append(`variants[${index}][sku]`, v.sku || '');
+    formData.append(`variants[${index}][price]`, v.price || 0);
+    formData.append(`variants[${index}][stock]`, v.stock ?? 0);
+    v.values.forEach(AV => {
+      if (AV && AV.id) {
+        formData.append(`variants[${index}][values][]`, AV.id);
+      }
+    });
+  });
+  
   loading.value = true;
+  
   try {
-    await axios.post(`/products-variants/${product.value.id}/update-all`, formData)
-    steps.value[1].completed = true
-    toast.success('مرحله دوم با موفقیت بروزرسانی شد!')
-    router.push('/products')
+    await axios.post(`/products-variants/${product.value.id}/update-all`, formData);
+    steps.value[1].completed = true;
+    // به‌روزرسانی backup با مقادیر جدید
+    backupVariantCombinations.value = JSON.parse(JSON.stringify(variantCombinations.value));
+    toast.success('مرحله دوم با موفقیت بروزرسانی شد!');
   } catch (e) {
-    if (e.response?.data?.errors) errors.value.step2 = e.response.data.errors
-    toast.error('خطا در ذخیره مرحله دوم')
+    if (e.response?.data?.errors) {
+      errors.value.step2 = e.response.data.errors;
+    }
+    toast.error('خطا در ذخیره مرحله دوم: ' + (e.response?.data?.message || e.message));
   } finally {
     loading.value = false;
   }
 }
+
 async function saveStep3() {
-  if (!selectedSpecification.value.length) return
-  const formData = new FormData()
+  if (!selectedSpecification.value.length) {
+    toast.warning('هیچ مشخصه‌ای برای ذخیره انتخاب نشده است');
+    return;
+  }
+  
+  const formData = new FormData();
   let index = 0;
 
   for (const key in selectedSpecificationValues) {
-    if (selectedSpecificationValues[key]) {
+    if (selectedSpecificationValues[key] && selectedSpecificationValues[key].length) {
       selectedSpecificationValues[key].forEach((spec) => {
         formData.append(`specifications[${index}][specification_value_id]`, spec);
         formData.append(`specifications[${index}][specification_id]`, key);
         index++;
-      })
+      });
     }
   }
+  
   loading.value = true;
+  
   try {
-    await axios.post(`/sync-specification/${product.value.id}`, formData)
-    steps.value[1].completed = true
-    toast.success('مرحله سوم با موفقیت ذخیره شد!')
+    await axios.post(`/sync-specification/${product.value.id}`, formData);
+    steps.value[2].completed = true;
+    toast.success('مرحله سوم با موفقیت ذخیره شد!');
   } catch (e) {
-    if (e.response?.data?.errors) errors.value.step2 = e.response.data.errors
-    toast.error('خطا در ذخیره مرحله سوم')
+    if (e.response?.data?.errors) {
+      errors.value.step2 = e.response.data.errors;
+    }
+    toast.error('خطا در ذخیره مرحله سوم: ' + (e.response?.data?.message || e.message));
   } finally {
     loading.value = false;
   }

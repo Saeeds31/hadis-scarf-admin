@@ -11,6 +11,7 @@
   "dependencies": {
     "@boindil/vue-file-agent-next": "^1.0.5",
     "@ckeditor/ckeditor5-vue": "^7.3.0",
+    "@riophae/vue-treeselect": "^0.4.0",
     "@tinymce/tinymce-vue": "^5.0.0",
     "@vueup/vue-quill": "^1.2.0",
     "apexcharts": "^5.3.5",
