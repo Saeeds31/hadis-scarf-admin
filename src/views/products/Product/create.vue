@@ -301,7 +301,7 @@ const selectedSpecification = ref([]);
 const selectedSpecificationValues = reactive({});
 
 let selectedAttibutes = ref([])
-const normalizer = node => ({ id: node.id, label: node.title, children: node.children })
+const normalizer = node => ({ id: node.id, label: node.title, children: node.all_children })
 const attributeNormalizer = node => ({ id: node.id, label: node.name })
 const attributeValuesNormalizer = node => ({ id: node.id, label: node.value })
 const specificationNormalizer = node => ({ id: node.id, label: node.title, values: node.values })
