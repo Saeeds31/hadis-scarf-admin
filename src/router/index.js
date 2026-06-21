@@ -149,6 +149,22 @@ const routes = [
   },
 
   {
+    path: "/content/stories",
+    name: "content-stories",
+    component: () => import("@/views/content/Story/list.vue"),
+  },
+
+  {
+    path: "/content/stories/create",
+    name: "content-stories-create",
+    component: () => import("@/views/content/Story/create.vue"),
+  },
+  {
+    path: "/content/stories/:id/edit",
+    name: "content-stories-edit",
+    component: () => import("@/views/content/Story/edit.vue"),
+  },
+  {
     path: "/content/sliders",
     name: "content-sliders",
     component: () => import("@/views/content/Slider/list.vue"),

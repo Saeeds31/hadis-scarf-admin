@@ -201,6 +201,12 @@ const menuItems = ref([
         icon: "bi-images"
       },
       {
+        name: "استوری",
+        permissions: ['story_view'],
+        link: "/content/stories",
+        icon: "bi-list-check"
+      },
+      {
         name: "بنر",
         permissions: ['banner_view'],
         link: "/content/banners",
