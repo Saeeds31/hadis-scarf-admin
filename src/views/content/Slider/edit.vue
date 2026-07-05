@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import { toast } from 'vue3-toastify'
@@ -90,6 +90,7 @@ const form = ref({
   type: '',
   button_text: '',
 })
+const errors = reactive({})
 
 function imageLoaded(files) {
   if (files.length) {
@@ -134,7 +135,13 @@ const updateForm = async () => {
     await axios.post(`/sliders/${route.params.id}`, formData)
     toast.success('اسلایدر با موفقیت بروزرسانی شد')
   } catch (e) {
-    toast.error('خطا در بروزرسانی اسلایدر')
+    if (e.response?.status === 422) {
+      Object.assign(errors, e.response.data.errors)
+      toast.error('خطاهای فرم را بررسی کنید ❌')
+    } else {
+      toast.error('خطا در ارسال اطلاعات ❌')
+    }
+
   } finally {
     loading.value = false
   }
