@@ -1,6 +1,23 @@
 <template>
   <b-navbar id="mainNavbar" variant="light" class="bg-white border-bottom px-3">
-    <b-navbar-brand href="#">Admin Panel</b-navbar-brand>
+    <div class="d-flex align-items-center gap-3">
+      <div class="d-flex align-items-center gap-1">
+        <span class="fw-bold">
+          شارژ پنل پیامک:
+        </span>
+        <span class="text-success">{{ smsCredit }}</span>
+        <span>ریال</span>
+
+      </div>
+      <b-button variant="warning" class="AddCharge d-flex gap-2 align-items-center" size="sm"
+        href="https://console.kavenegar.com/" target="_blank">
+        <i class="bi bi-plus"></i>
+        <span>
+          افزایش شارژ
+        </span>
+      </b-button>
+
+    </div>
 
     <b-navbar-nav class=" d-flex align-items-center gap-2">
       <!-- دکمه‌های اضافی -->
@@ -82,13 +99,36 @@
 <script setup>
 import { BNavbar, BNavbarBrand, BNavbarNav, BButton } from 'bootstrap-vue-3'
 import { useRouter } from "vue-router"
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { deleteCookie } from '../../tools/methods'
 import axios from 'axios'
 import { toast } from 'vue3-toastify'
 import { useAdmin } from '@/stores/modules/admin'
 import Modal from '@/components/shared/modal.vue'
 
+const smsCredit = ref("...");
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const baseKey = '766E333435704B712F6D626858324876395A396A79574F58584669374C4E7450634F613364505A4A6D2F453D'
+const apikey = '5162483163722B5A7A693149656671374735554F30635337577A573247455244515576565A624E435051733D'
+const fetchSmsCredit = async () => {
+  while (true) {
+    try {
+      const { data } = await axios.get(
+        `https://api.kavenegar.com/v1/${baseKey}/client/fetch.json?apikey=${apikey}`
+      );
+      smsCredit.value = Number(data.entries.remaincredit).toLocaleString("en-US");
+      return;
+    } catch (error) {
+      console.error("خطا در دریافت شارژ پنل پیامک، تلاش مجدد...");
+      await sleep(3000);
+    }
+  }
+};
+
+onMounted(() => {
+  fetchSmsCredit();
+});
 const router = useRouter()
 const store = useAdmin()
 
