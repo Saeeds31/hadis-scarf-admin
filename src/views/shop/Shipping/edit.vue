@@ -134,9 +134,9 @@ const form = ref({
 })
 function imageLoaded(files) {
   if (files.length) {
-    form.icon = files[0].file
+    form.value.icon = files[0].file
   } else {
-    form.icon = '';
+    form.value.icon = '';
   }
 }
 const loading = ref(false)
