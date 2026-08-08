@@ -241,6 +241,7 @@
                                                 <template v-if="item.variant?.values?.length">
                                                     <span v-for="val in item.variant.values" :key="val.id"
                                                         class="variant-tag">
+                                                        {{ val.attribute?val.attribute.name+" : ":"" }}
                                                         {{ val.value }}
                                                     </span>
                                                 </template>
