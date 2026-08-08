@@ -364,6 +364,12 @@ const routes = [
     name: "orders-show",
     component: () => import("@/views/orders/show.vue"),
   },
+  
+  {
+    path: "/orders/print",
+    name: "orders-print",
+    component: () => import("@/views/orders/print.vue"),
+  },
   { path: "/:pathMatch(.*)*", redirect: "/dashboard" },
 ];
 const router = createRouter({
