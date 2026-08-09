@@ -106,7 +106,7 @@
                 <option value="">انتخاب کنید</option>
                 <option value="draft">پیشنویس</option>
                 <option value="published">انتشار</option>
-                <option value="unavailable">ناموجود</option>
+                <option value="unpublished">ناموجود</option>
               </select>
               <span v-if="errors.step1.status" class="text-danger">{{ errors.step1.status[0] }}</span>
             </div>
