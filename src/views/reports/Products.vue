@@ -14,49 +14,58 @@
             <div class="card-body">
                 <form @submit.prevent="getReport()" class="row g-3">
                     <div class="col-md-2">
-                        <select v-model="filters.category_id" class="form-select">
-                            <option value="">همه دسته‌بندی‌ها</option>
-                            <option v-for="cat in categories" :key="cat.id" :value="cat.id">
-                                {{ cat.name }}
-                            </option>
-                        </select>
+                        <b-form-group label="انتخاب دسته بندی">
+
+                            <select v-model="filters.category_id" class="form-select">
+                                <option value="">همه دسته‌بندی‌ها</option>
+                                <option v-for="cat in categories" :key="cat.id" :value="cat.id">
+                                    {{ cat.title }}
+                                </option>
+                            </select>
+                        </b-form-group>
                     </div>
                     <div class="col-md-2">
-                        <select v-model="filters.status" class="form-select">
-                            <option value="">همه وضعیت‌ها</option>
-                            <option value="published">منتشر شده</option>
-                            <option value="unpublished">منتشر نشده</option>
-                        </select>
+                        <b-form-group label="وضعیت محصول">
+
+                            <select v-model="filters.status" class="form-select">
+                                <option value="">همه وضعیت‌ها</option>
+                                <option value="published">منتشر شده</option>
+                                <option value="unpublished">ناموجود</option>
+                            </select>
+                        </b-form-group>
                     </div>
                     <div class="col-md-2">
-                        <input v-model="filters.price_min" type="number" class="form-control"
-                            placeholder="حداقل قیمت" />
+                        <b-form-group label="حداقل قیمت">
+
+
+                            <input v-model="filters.price_min" type="number" class="form-control"
+                                placeholder="حداقل قیمت" />
+                        </b-form-group>
                     </div>
                     <div class="col-md-2">
-                        <input v-model="filters.price_max" type="number" class="form-control"
-                            placeholder="حداکثر قیمت" />
+                        <b-form-group label="حداکثر قیمت">
+
+                            <input v-model="filters.price_max" type="number" class="form-control"
+                                placeholder="حداکثر قیمت" />
+                        </b-form-group>
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <b-form-group label="از تاریخ">
+
+                            <date-picker display-format="jYYYY/jMM/jDD" placeholder="از تاریخ" format="YYYY-MM-DD"
+                                v-model="filters.date_from"></date-picker>
+                        </b-form-group>
                     </div>
                     <div class="col-md-2">
-                        <select v-model="filters.in_stock" class="form-select">
-                            <option value="">همه</option>
-                            <option value="1">دارای موجودی</option>
-                        </select>
+                        <b-form-group label="تا تاریخ">
+
+                            <date-picker display-format="jYYYY/jMM/jDD" placeholder="تا تاریخ" format="YYYY-MM-DD"
+                                v-model="filters.date_to"></date-picker>
+                        </b-form-group>
                     </div>
-                    <div class="col-md-2">
-                        <select v-model="filters.has_discount" class="form-select">
-                            <option value="">همه</option>
-                            <option value="1">دارای تخفیف</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <date-picker display-format="jYYYY/jMM/jDD" placeholder="از تاریخ" format="YYYY-MM-DD"
-                            v-model="filters.date_from"></date-picker>
-                    </div>
-                    <div class="col-md-2">
-                        <date-picker display-format="jYYYY/jMM/jDD" placeholder="تا تاریخ" format="YYYY-MM-DD"
-                            v-model="filters.date_to"></date-picker>
-                    </div>
-                    <div class="col-12">
+                    <div>
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="bi bi-save2"></i>
                             <span>
@@ -92,6 +101,7 @@
                                     <th>موجودی</th>
                                     <th>وضعیت</th>
                                     <th>تخفیف</th>
+                                    <th>تعداد فروش</th>
                                     <th>تاریخ ایجاد</th>
                                 </tr>
                             </thead>
@@ -112,6 +122,9 @@
                                             {{ product.discount_type === "percent" ? "%" : "تومان" }}
                                         </span>
                                         <span v-else>-</span>
+                                    </td>
+                                    <td>
+                                        {{ product.total_sold }}
                                     </td>
                                     <td>
                                         {{ new Date(product.created_at).toLocaleDateString("fa-IR") }}
@@ -144,10 +157,8 @@ const filters = ref({
     status: "",
     price_min: "",
     price_max: "",
-    in_stock: "",
     date_from: "",
     date_to: "",
-    has_discount: "",
 });
 
 const categories = ref([]); // لیست دسته‌ها (از API پر میشه)
@@ -186,7 +197,7 @@ onMounted(() => {
     getReport();
     // دسته‌بندی‌ها رو هم بیار (فرض می‌کنم API آماده داری)
     axios.get("/categories").then((res) => {
-        categories.value = res.data;
+        categories.value = res.data.data;
     });
 });
 </script>

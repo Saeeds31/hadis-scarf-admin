@@ -15,7 +15,7 @@
                             <li><strong>کدپستی:</strong> {{ order.address.postal_code }}</li>
                             <li><strong>شماره تماس گیرنده:</strong> {{ order.address.phone }}</li>
                         </template>
-                        <li><strong>روش حمل:</strong> {{ order.shipping_method?.name }}</li>
+                        <li><strong>روش حمل:</strong> {{ order.shipping?.title }}</li>
                         <li><strong>روش پرداخت:</strong> {{ paymentMethods[order.payment_method] }}</li>
                     </ul>
                 </b-card>
