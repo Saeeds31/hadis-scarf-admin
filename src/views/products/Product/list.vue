@@ -67,8 +67,9 @@
                   <span v-else>—</span>
                 </td>
                 <td>
-                  <span :class="product.status ? 'badge bg-success' : 'badge bg-secondary'">
-                    {{ product.status ? 'فعال' : 'غیرفعال' }}
+                  <span :class="product.status == 'published' ? 'badge bg-success' : 'badge bg-secondary'">
+                    {{ product.status == 'published' ? 'موجود' : product.status == 'unpublished' ? 'ناموجود' : 'پیشنویس'
+                    }}
                   </span>
                 </td>
                 <td>
