@@ -369,7 +369,12 @@ const routes = [
     path: "/orders/print",
     name: "orders-print",
     component: () => import("@/views/orders/print.vue"),
+  }, {
+    path: "/card-transfer/receipts",
+    name: "orders-card-transfer-receipts",
+    component: () => import("@/views/CardToCard/list.vue"),
   },
+  
   { path: "/:pathMatch(.*)*", redirect: "/dashboard" },
 ];
 const router = createRouter({

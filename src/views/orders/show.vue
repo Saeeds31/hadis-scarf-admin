@@ -17,6 +17,9 @@
                         </template>
                         <li><strong>روش حمل:</strong> {{ order.shipping?.title }}</li>
                         <li><strong>روش پرداخت:</strong> {{ paymentMethods[order.payment_method] }}</li>
+                        <li v-if="order.payment_method == 'card_transfer'"><strong>وضعیت رسید:</strong>
+                            {{ order.card_transfer_receipt?.status == "approved" ?
+                                "تایید شده" : order.card_transfer_receipt?.status == "rejected" ? "رد شده" : "در حال بررسی" }}</li>
                     </ul>
                 </b-card>
             </b-col>
@@ -111,6 +114,7 @@ const orderStatusOptions = [
     { value: "reserved", text: "رزرو شده" },
     { value: "processing", text: "در حال پردازش" },
     { value: "shipped", text: "ارسال شده" },
+    { value: "paid", text: "پرداخت شده" },
     { value: "completed", text: "تکمیل شده" },
     { value: "canceled", text: "لغو شده" },
     { value: "returned", text: "مرجوع شده" },
@@ -120,6 +124,7 @@ const paymentMethods = {
     online: "پرداخت آنلاین",
     wallet: "کیف پول",
     cod: "پرداخت در محل",
+    card_transfer: "کارت به کارت",
 }
 
 const paymentStatusOptions = [

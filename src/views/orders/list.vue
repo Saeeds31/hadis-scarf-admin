@@ -374,6 +374,8 @@ const statusText = (status) => {
     const map = {
         pending: "در انتظار",
         failed: "ناموفق",
+        card_transfer_pending: "در انتظار کارت به کارت",
+        
         processing: "در حال پردازش",
         paid: "پرداخت شده",
         shipped: "ارسال شده",
@@ -425,6 +427,7 @@ const paymentMethodText = (method) => {
         online: "پرداخت آنلاین",
         wallet: "کیف پول",
         cod: "پرداخت در محل",
+       card_transfer : "کارت به کارت",
     };
     return map[method] ?? method;
 };

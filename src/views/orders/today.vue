@@ -290,6 +290,8 @@ const paymentMethodText = (method) => {
     const map = {
         online: "پرداخت آنلاین",
         wallet: "کیف پول",
+        card_transfer: "کارت به کارت",
+        
         cod: "پرداخت در محل",
     };
     return map[method] ?? method;
