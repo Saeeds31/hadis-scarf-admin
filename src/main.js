@@ -27,6 +27,8 @@ app.use(Vue3Toastify, {
   autoClose: 3000, // زمان بسته شدن (میلی‌ثانیه)
   position: "top-right", // مکان پیش‌فرض toast
 });
+// Add these filters globally
+
 app.use(BootstrapVue3);
 app.use(VueFileAgent);
 app.use(pinia);

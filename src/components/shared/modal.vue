@@ -48,6 +48,8 @@ function closeModal(e) {
     min-width: max(320px, 50vw);
     min-height: 80vh;
     border-radius: 16px;
+    max-height: 97vh;
+    overflow-y: auto;
 }
 
 .modalHeader {

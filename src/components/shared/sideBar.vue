@@ -237,6 +237,12 @@ const menuItems = ref([
         link: "/reports/products",
         icon: "bi-box2"
       },
+      {
+        name: "تنوع ها",
+        permissions: ['report_products'],
+        link: "/reports/variant",
+        icon: "bi-box"
+      },
     ],
   },
   {
