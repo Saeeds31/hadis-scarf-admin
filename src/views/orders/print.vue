@@ -132,10 +132,10 @@
                                             {{ order.user?.full_name ?? '-' }}
                                         </strong>
 
-                                        <div class="info-line">
+                                        <strong class="info-line info-card-content">
                                             <i class="bi bi-phone"></i>
-                                            <span>{{ order.user?.mobile ?? '-' }}</span>
-                                        </div>
+                                            <storng>{{ order.user?.mobile ?? '-' }}</storng>
+                                        </strong>
                                     </div>
                                 </div>
 
@@ -153,21 +153,21 @@
                                             {{ order.address?.address_line ?? '-' }}
                                         </strong>
 
-                                        <div class="info-line">
+                                        <div class="info-line line info-card-content">
                                             <i class="bi bi-pin-map"></i>
-                                            <span>
+                                            <strong>
                                                 {{ order.address?.province?.name ?? '-' }}
                                                 -
                                                 {{ order.address?.city?.name ?? '-' }}
-                                            </span>
+                                            </strong>
                                         </div>
 
-                                        <div class="info-line">
+                                        <div class="info-line line info-card-content">
                                             <i class="bi bi-upc-scan"></i>
-                                            <span>
+                                            <strong>
                                                 کد پستی:
                                                 {{ order.address?.postal_code ?? '-' }}
-                                            </span>
+                                            </strong>
                                         </div>
                                     </div>
                                 </div>
@@ -237,13 +237,13 @@
                                                 {{ item.product?.title ?? '-' }}
                                             </td>
 
-                                            <td class="variants">
+                                            <td class="variants  info-card-content">
                                                 <template v-if="item.variant?.values?.length">
-                                                    <span v-for="val in item.variant.values" :key="val.id"
+                                                    <strong v-for="val in item.variant.values" :key="val.id"
                                                         class="variant-tag">
                                                         {{ val.attribute?val.attribute.name+" : ":"" }}
                                                         {{ val.value }}
-                                                    </span>
+                                                    </strong>
                                                 </template>
                                                 <span v-else class="muted">بدون مشخصات</span>
                                             </td>
