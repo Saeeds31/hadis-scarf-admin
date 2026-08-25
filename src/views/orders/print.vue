@@ -597,7 +597,7 @@ const handlePrint = () => {
                     background: #fff;
                     color: #18181b;
                     line-height: 1.7;
-                    font-size: 13px;
+                    font-size: 15px;
                 }
 
                 .print-header {
@@ -623,11 +623,11 @@ const handlePrint = () => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 20px;
+                    font-size: 22px;
                 }
 
                 .invoice-brand h1 {
-                    font-size: 21px;
+                    font-size: 23px;
                     margin: 0;
                     font-weight: 900;
                     color: #111113;
@@ -636,7 +636,7 @@ const handlePrint = () => {
                 .invoice-brand p {
                     margin: 2px 0 0;
                     color: #71717a;
-                    font-size: 10px;
+                    font-size: 12px;
                 }
 
                 .invoice-meta {
@@ -648,12 +648,12 @@ const handlePrint = () => {
                 .invoice-meta-item span {
                     display: block;
                     color: #a1a1aa;
-                    font-size: 9px;
+                    font-size: 11px;
                     margin-bottom: 2px;
                 }
 
                 .invoice-meta-item strong {
-                    font-size: 12px;
+                    font-size: 14px;
                     font-weight: 800;
                 }
 
@@ -677,14 +677,14 @@ const handlePrint = () => {
                 .print-title small {
                     display: block;
                     color: #a1a1aa;
-                    font-size: 8px;
+                    font-size: 10px;
                     letter-spacing: 2px;
                     direction: ltr;
                 }
 
                 .print-title strong {
                     display: block;
-                    font-size: 15px;
+                    font-size: 17px;
                     font-weight: 900;
                 }
 
@@ -714,12 +714,12 @@ const handlePrint = () => {
 
                 .order-id-box small {
                     display: block;
-                    font-size: 8px;
+                    font-size: 10px;
                     color: #a1a1aa;
                 }
 
                 .order-id-box strong {
-                    font-size: 17px;
+                    font-size: 19px;
                     font-weight: 900;
                 }
 
@@ -735,14 +735,14 @@ const handlePrint = () => {
                     gap: 5px;
                     border-radius: 999px;
                     padding: 4px 9px;
-                    font-size: 9px;
+                    font-size: 11px;
                     font-weight: 700;
                     background: #f4f4f5;
                     color: #52525b;
                 }
 
                 .status-badge i {
-                    font-size: 5px;
+                    font-size: 7px;
                 }
 
                 .status-completed,
@@ -786,12 +786,12 @@ const handlePrint = () => {
                 .order-date span {
                     display: block;
                     color: #a1a1aa;
-                    font-size: 8px;
+                    font-size: 10px;
                 }
 
                 .order-date strong {
                     display: block;
-                    font-size: 10px;
+                    font-size: 12px;
                 }
 
                 .order-body {
@@ -820,7 +820,7 @@ const handlePrint = () => {
                     padding-bottom: 8px;
                     margin-bottom: 8px;
                     border-bottom: 1px solid #f1f1f1;
-                    font-size: 9px;
+                    font-size: 11px;
                     color: #71717a;
                     font-weight: 700;
                 }
@@ -834,12 +834,12 @@ const handlePrint = () => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 11px;
+                    font-size: 13px;
                 }
 
                 .info-card-content > strong {
                     display: block;
-                    font-size: 11px;
+                    font-size: 13px;
                     font-weight: 800;
                     margin-bottom: 5px;
                 }
@@ -849,7 +849,7 @@ const handlePrint = () => {
                     align-items: center;
                     gap: 5px;
                     color: #52525b;
-                    font-size: 9px;
+                    font-size: 11px;
                     margin-top: 3px;
                 }
 
@@ -879,14 +879,14 @@ const handlePrint = () => {
 
                 .section-title span {
                     display: block;
-                    font-size: 11px;
+                    font-size: 13px;
                     font-weight: 900;
                 }
 
                 .section-title small {
                     display: block;
                     color: #a1a1aa;
-                    font-size: 8px;
+                    font-size: 11px;
                 }
 
                 .products-table {
@@ -907,7 +907,7 @@ const handlePrint = () => {
 
                 .products-table th {
                     padding: 8px 7px;
-                    font-size: 8px;
+                    font-size: 10px;
                     font-weight: 700;
                     white-space: nowrap;
                 }
@@ -916,7 +916,7 @@ const handlePrint = () => {
                     padding: 9px 7px;
                     border-bottom: 1px solid #f0f0f0;
                     text-align: center;
-                    font-size: 9px;
+                    font-size: 11px;
                 }
 
                 .products-table tr:last-child td {
@@ -943,7 +943,7 @@ const handlePrint = () => {
                     border: 1px solid #e4e4e7;
                     padding: 2px 6px;
                     border-radius: 5px;
-                    font-size: 7px;
+                    font-size: 9px;
                     margin: 1px;
                 }
 
@@ -964,7 +964,7 @@ const handlePrint = () => {
 
                 .products-table td small {
                     color: #a1a1aa;
-                    font-size: 7px;
+                    font-size: 9px;
                 }
 
                 .total-price {
@@ -999,13 +999,13 @@ const handlePrint = () => {
 
                 .thank-message strong {
                     display: block;
-                    font-size: 10px;
+                    font-size: 12px;
                     color: #18181b;
                 }
 
                 .thank-message span {
                     display: block;
-                    font-size: 8px;
+                    font-size: 10px;
                     color: #a1a1aa;
                 }
 
@@ -1021,7 +1021,7 @@ const handlePrint = () => {
                     align-items: center;
                     justify-content: space-between;
                     padding: 7px 11px;
-                    font-size: 9px;
+                    font-size: 11px;
                     border-bottom: 1px solid #f1f1f1;
                 }
 
@@ -1030,7 +1030,7 @@ const handlePrint = () => {
                 }
 
                 .summary-row small {
-                    font-size: 7px;
+                    font-size: 9px;
                     color: #a1a1aa;
                 }
 
@@ -1049,18 +1049,18 @@ const handlePrint = () => {
 
                 .summary-total span {
                     display: block;
-                    font-size: 10px;
+                    font-size: 12px;
                     font-weight: 800;
                 }
 
                 .summary-total small {
                     display: block;
-                    font-size: 7px;
+                    font-size: 9px;
                     color: #a1a1aa;
                 }
 
                 .summary-total strong {
-                    font-size: 15px;
+                    font-size: 17px;
                     font-weight: 900;
                 }
 
@@ -1084,7 +1084,7 @@ const handlePrint = () => {
                 }
 
                 .page-separator i {
-                    font-size: 12px;
+                    font-size: 14px;
                 }
 
                 .labels-grid {
@@ -1128,12 +1128,12 @@ const handlePrint = () => {
 
                 .label-brand strong {
                     display: block;
-                    font-size: 11px;
+                    font-size: 13px;
                 }
 
                 .label-brand span {
                     display: block;
-                    font-size: 6px;
+                    font-size: 8px;
                     letter-spacing: 1px;
                     color: #a1a1aa;
                     direction: ltr;
@@ -1145,13 +1145,13 @@ const handlePrint = () => {
 
                 .label-number small {
                     display: block;
-                    font-size: 6px;
+                    font-size: 8px;
                     color: #a1a1aa;
                     direction: ltr;
                 }
 
                 .label-number strong {
-                    font-size: 14px;
+                    font-size: 16px;
                 }
 
                 .label-route {
@@ -1163,12 +1163,12 @@ const handlePrint = () => {
                     align-items: center;
                     gap: 7px;
                     color: #71717a;
-                    font-size: 8px;
+                    font-size: 10px;
                     margin-bottom: 9px;
                 }
 
                 .route-title i {
-                    font-size: 13px;
+                    font-size: 15px;
                     color: #18181b;
                 }
 
@@ -1179,13 +1179,13 @@ const handlePrint = () => {
                 }
 
                 .receiver-name {
-                    font-size: 16px;
+                    font-size: 18px;
                     font-weight: 900;
                     margin-bottom: 3px;
                 }
 
                 .receiver-phone {
-                    font-size: 9px;
+                    font-size: 11px;
                     color: #52525b;
                     margin-bottom: 10px;
                 }
@@ -1195,7 +1195,7 @@ const handlePrint = () => {
                 }
 
                 .receiver-address {
-                    font-size: 10px;
+                    font-size: 12px;
                     line-height: 1.8;
                     padding: 8px;
                     background: #fafafa;
@@ -1207,7 +1207,7 @@ const handlePrint = () => {
                     justify-content: space-between;
                     gap: 10px;
                     margin-top: 8px;
-                    font-size: 8px;
+                    font-size: 10px;
                     color: #52525b;
                 }
 
@@ -1228,12 +1228,12 @@ const handlePrint = () => {
                 .label-bottom small {
                     display: block;
                     color: #a1a1aa;
-                    font-size: 7px;
+                    font-size: 9px;
                 }
 
                 .label-bottom strong {
                     display: block;
-                    font-size: 9px;
+                    font-size: 11px;
                 }
 
                 .label-price {
@@ -1241,11 +1241,11 @@ const handlePrint = () => {
                 }
 
                 .label-price strong {
-                    font-size: 11px;
+                    font-size: 13px;
                 }
 
                 .label-price em {
-                    font-size: 7px;
+                    font-size: 9px;
                     font-style: normal;
                     color: #71717a;
                 }
@@ -1266,14 +1266,14 @@ const handlePrint = () => {
 
                 .print-footer strong {
                     display: block;
-                    font-size: 10px;
+                    font-size: 12px;
                     color: #52525b;
                 }
 
                 .print-footer span,
                 .print-footer small {
                     display: block;
-                    font-size: 7px;
+                    font-size: 9px;
                     margin-top: 2px;
                 }
 
@@ -1521,19 +1521,19 @@ onMounted(() => {
     background: #18181b;
     color: #fff;
     border-radius: 12px;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .toolbar-brand strong {
     display: block;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 900;
 }
 
 .toolbar-brand span {
     display: block;
     color: #a1a1aa;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 2px;
 }
 
@@ -1555,7 +1555,7 @@ onMounted(() => {
     border-radius: 10px;
 
     color: #52525b;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -1581,7 +1581,7 @@ onMounted(() => {
 
     border-radius: 10px;
 
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 800;
 
     cursor: pointer;
@@ -1671,12 +1671,12 @@ onMounted(() => {
 }
 
 .loading-box strong {
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .loading-box span {
     color: #a1a1aa;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 5px;
 }
 
@@ -1713,21 +1713,21 @@ onMounted(() => {
     border: 1px solid #e4e4e7;
 
     color: #a1a1aa;
-    font-size: 30px;
+    font-size: 32px;
 
     margin-bottom: 20px;
 }
 
 .empty-state h3 {
     margin: 0;
-    font-size: 17px;
+    font-size: 19px;
     font-weight: 900;
 }
 
 .empty-state p {
     margin: 7px 0 20px;
     color: #a1a1aa;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .empty-button {
@@ -1742,7 +1742,7 @@ onMounted(() => {
     background: #18181b;
     color: #fff;
 
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 800;
     text-decoration: none;
 }
@@ -1791,12 +1791,12 @@ onMounted(() => {
 .order-id-box small {
     display: block;
     color: #a1a1aa;
-    font-size: 9px;
+    font-size: 11px;
     margin-bottom: 2px;
 }
 
 .order-id-box strong {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 900;
 }
 
@@ -1815,12 +1815,12 @@ onMounted(() => {
 
     border-radius: 999px;
 
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 800;
 }
 
 .status-badge i {
-    font-size: 5px;
+    font-size: 7px;
 }
 
 .status-completed,
@@ -1864,12 +1864,12 @@ onMounted(() => {
 .order-date span {
     display: block;
     color: #a1a1aa;
-    font-size: 9px;
+    font-size: 11px;
 }
 
 .order-date strong {
     display: block;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 2px;
 }
 
@@ -1911,7 +1911,7 @@ onMounted(() => {
     border-bottom: 1px solid #e7e7e8;
 
     color: #71717a;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 800;
 }
 
@@ -1928,14 +1928,14 @@ onMounted(() => {
 
     border-radius: 9px;
 
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .info-card-content>strong {
     display: block;
 
     color: #18181b;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 900;
 
     margin-bottom: 7px;
@@ -1947,7 +1947,7 @@ onMounted(() => {
     gap: 7px;
 
     color: #52525b;
-    font-size: 10px;
+    font-size: 12px;
 
     margin-top: 5px;
 }
@@ -1986,14 +1986,14 @@ onMounted(() => {
 
 .section-title span {
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 900;
 }
 
 .section-title small {
     display: block;
     color: #a1a1aa;
-    font-size: 9px;
+    font-size: 11px;
     margin-top: 2px;
 }
 
@@ -2022,7 +2022,7 @@ onMounted(() => {
 .products-table th {
     padding: 11px 9px;
 
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 800;
 }
 
@@ -2033,7 +2033,7 @@ onMounted(() => {
 
     text-align: center;
 
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .products-table tbody tr:last-child td {
@@ -2061,7 +2061,7 @@ onMounted(() => {
     background: #f4f4f5;
     border: 1px solid #e4e4e7;
 
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .muted {
@@ -2086,7 +2086,7 @@ onMounted(() => {
 
 .products-table td small {
     color: #a1a1aa;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .total-price {
@@ -2130,14 +2130,14 @@ onMounted(() => {
 
 .thank-message strong {
     display: block;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 900;
 }
 
 .thank-message span {
     display: block;
     color: #a1a1aa;
-    font-size: 9px;
+    font-size: 11px;
     margin-top: 2px;
 }
 
@@ -2160,7 +2160,7 @@ onMounted(() => {
     border-bottom: 1px solid #f0f0f0;
 
     color: #52525b;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .summary-row strong {
@@ -2170,7 +2170,7 @@ onMounted(() => {
 
 .summary-row small {
     color: #a1a1aa;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .discount-row strong {
@@ -2190,18 +2190,18 @@ onMounted(() => {
 
 .summary-total span {
     display: block;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 900;
 }
 
 .summary-total small {
     display: block;
     color: #a1a1aa;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .summary-total strong {
-    font-size: 17px;
+    font-size: 19px;
     font-weight: 900;
 }
 
@@ -2231,7 +2231,7 @@ onMounted(() => {
 }
 
 .page-separator i {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 
@@ -2284,19 +2284,19 @@ onMounted(() => {
     border: 1px solid rgba(255, 255, 255, .25);
     border-radius: 9px;
 
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .label-brand strong {
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 900;
 }
 
 .label-brand span {
     display: block;
     color: #a1a1aa;
-    font-size: 7px;
+    font-size: 9px;
     letter-spacing: 1px;
     direction: ltr;
 }
@@ -2308,12 +2308,12 @@ onMounted(() => {
 .label-number small {
     display: block;
     color: #a1a1aa;
-    font-size: 7px;
+    font-size: 9px;
     direction: ltr;
 }
 
 .label-number strong {
-    font-size: 15px;
+    font-size: 17px;
 }
 
 .label-route {
@@ -2327,7 +2327,7 @@ onMounted(() => {
 
     color: #71717a;
 
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 700;
 
     margin-bottom: 10px;
@@ -2344,7 +2344,7 @@ onMounted(() => {
 }
 
 .receiver-name {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 900;
 
     margin-bottom: 4px;
@@ -2352,7 +2352,7 @@ onMounted(() => {
 
 .receiver-phone {
     color: #52525b;
-    font-size: 10px;
+    font-size: 12px;
 
     margin-bottom: 13px;
 }
@@ -2368,7 +2368,7 @@ onMounted(() => {
     border: 1px solid #f0f0f0;
     border-radius: 8px;
 
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.9;
 }
 
@@ -2380,7 +2380,7 @@ onMounted(() => {
     margin-top: 9px;
 
     color: #52525b;
-    font-size: 9px;
+    font-size: 2px;
 }
 
 .receiver-location strong {
@@ -2402,12 +2402,12 @@ onMounted(() => {
 .label-bottom small {
     display: block;
     color: #a1a1aa;
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .label-bottom strong {
     display: block;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 900;
 }
 
@@ -2416,12 +2416,12 @@ onMounted(() => {
 }
 
 .label-price strong {
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .label-price em {
     color: #71717a;
-    font-size: 8px;
+    font-size: 10px;
     font-style: normal;
 }
 
@@ -2544,4 +2544,3 @@ onMounted(() => {
 
 }
 </style>
-```
