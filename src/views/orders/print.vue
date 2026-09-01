@@ -218,7 +218,9 @@
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th class="index-col">#</th>
+                                            <th class="index-col">ردیف سفارش
+                                                <strong>#{{ String(order.id).padStart(5, '0') }}</strong>
+                                            </th>
                                             <th class="product-col">محصول</th>
                                             <th>مشخصات</th>
                                             <th class="qty-col">تعداد</th>
@@ -241,7 +243,7 @@
                                                 <template v-if="item.variant?.values?.length">
                                                     <strong v-for="val in item.variant.values" :key="val.id"
                                                         class="variant-tag">
-                                                        {{ val.attribute?val.attribute.name+" : ":"" }}
+                                                        {{ val.attribute ? val.attribute.name + " : " : "" }}
                                                         {{ val.value }}
                                                     </strong>
                                                 </template>
