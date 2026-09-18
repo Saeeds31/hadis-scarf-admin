@@ -7,25 +7,23 @@
           <i class="bi bi-box-seam"></i>
           <span>گزارش موجودی و فروش کالا</span>
         </h3>
-        <b-spinner small v-if="loading"></b-spinner>
+        <div class="d-flex align-items-center gap-2">
+          <b-spinner small v-if="loading"></b-spinner>
+          <button @click="exportExcel" class="btn btn-success btn-sm" :disabled="loading || !reportData.length">
+            <i class="bi bi-file-earmark-excel"></i>
+            <span class="mx-1">خروجی Excel</span>
+          </button>
+        </div>
       </div>
       <div class="card-body">
         <form @submit.prevent="getReport()" class="row g-3">
           <div class="col-md-2">
-            <date-picker
-              display-format="jYYYY/jMM/jDD"
-              placeholder="از تاریخ"
-              format="YYYY-MM-DD"
-              v-model="filters.date_from"
-            ></date-picker>
+            <date-picker display-format="jYYYY/jMM/jDD" placeholder="از تاریخ" format="YYYY-MM-DD"
+              v-model="filters.date_from"></date-picker>
           </div>
           <div class="col-md-2">
-            <date-picker
-              display-format="jYYYY/jMM/jDD"
-              placeholder="تا تاریخ"
-              format="YYYY-MM-DD"
-              v-model="filters.date_to"
-            ></date-picker>
+            <date-picker display-format="jYYYY/jMM/jDD" placeholder="تا تاریخ" format="YYYY-MM-DD"
+              v-model="filters.date_to"></date-picker>
           </div>
           <div class="col-md-2">
             <select v-model="filters.category_id" class="form-select">
@@ -43,20 +41,10 @@
             </select>
           </div>
           <div class="col-md-2">
-            <input
-              type="text"
-              v-model="filters.product_id"
-              class="form-control"
-              placeholder="شناسه کالا"
-            />
+            <input type="text" v-model="filters.product_id" class="form-control" placeholder="شناسه کالا" />
           </div>
           <div class="col-md-2">
-            <input
-              type="text"
-              v-model="filters.search"
-              class="form-control"
-              placeholder="جستجو..."
-            />
+            <input type="text" v-model="filters.search" class="form-control" placeholder="جستجو..." />
           </div>
           <div class="col-12">
             <button type="submit" class="btn btn-primary w-100">
@@ -262,12 +250,8 @@
     </div>
 
     <!-- Product Detail Modal -->
-    <Modal
-      v-if="showModal"
-      id="productDetailModal"
-      @closeModal="() => { showModal = false; selectedProduct = null; }"
-      :title="selectedProduct?.product?.title || 'جزئیات محصول'"
-    >
+    <Modal v-if="showModal" id="productDetailModal" @closeModal="() => { showModal = false; selectedProduct = null; }"
+      :title="selectedProduct?.product?.title || 'جزئیات محصول'">
       <div v-if="selectedProduct">
         <!-- خلاصه فروش -->
         <h5 class="mb-3">خلاصه فروش</h5>
@@ -426,7 +410,45 @@ function formatNumber(value) {
   if (!value && value !== 0) return "۰";
   return new Intl.NumberFormat("fa-IR").format(value);
 }
+const exportExcel = async () => {
+  try {
+    loading.value = true;
 
+    const params = {
+      ...filters.value,
+      export: 'excel',
+    };
+
+    // حذف مقادیر خالی
+    Object.keys(params).forEach(key => {
+      if (params[key] === '' || params[key] === null || params[key] === undefined) {
+        delete params[key];
+      }
+    });
+
+    const response = await axios.get('/reports/products/inventory', {
+      params,
+      responseType: 'blob',
+    });
+
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `product-inventory-report-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error exporting Excel:', error);
+    alert('خطا در دانلود فایل Excel');
+  } finally {
+    loading.value = false;
+  }
+};
 function formatDate(value) {
   if (!value) return "";
   return new Date(value).toLocaleDateString("fa-IR");
@@ -544,23 +566,23 @@ const topSellingProducts = computed(() => {
 
 // Methods
 const getReport = async () => {
-    loading.value = true;
-    try {
-        const { data } = await axios.get('/reports/products/inventory', {
-            params: { ...filters.value },
-        });
-        reportData.value = data.data || [];
-        summary.value = data.summary || null;
-        
-        // لاگ برای دیباگ
-        console.log('Product Report Summary:', data.summary);
-        console.log('Product Report Total Revenue:', data.summary?.total_revenue);
-        
-    } catch (error) {
-        console.error('Error fetching report:', error);
-    } finally {
-        loading.value = false;
-    }
+  loading.value = true;
+  try {
+    const { data } = await axios.get('/reports/products/inventory', {
+      params: { ...filters.value },
+    });
+    reportData.value = data.data || [];
+    summary.value = data.summary || null;
+
+    // لاگ برای دیباگ
+    console.log('Product Report Summary:', data.summary);
+    console.log('Product Report Total Revenue:', data.summary?.total_revenue);
+
+  } catch (error) {
+    console.error('Error fetching report:', error);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const showProductDetail = (item) => {

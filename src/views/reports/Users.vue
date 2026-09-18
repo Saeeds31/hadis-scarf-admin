@@ -2,11 +2,15 @@
     <div class="container py-4" v-if="checkPermission(['report_users'])">
         <!-- Filters -->
         <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h3>
                     <i class="bi bi-people"></i>
                     <span>گزارش خرید کاربران</span>
                 </h3>
+                <button @click="exportExcel" class="btn btn-success btn-sm" :disabled="loading || !reportData.length">
+                    <i class="bi bi-file-earmark-excel"></i>
+                    <span class="mx-1">خروجی Excel</span>
+                </button>
             </div>
             <div class="card-body">
                 <form @submit.prevent="getReport()" class="row g-3">
@@ -18,7 +22,7 @@
                         <date-picker display-format="jYYYY/jMM/jDD" placeholder="تا تاریخ" format="YYYY-MM-DD"
                             v-model="filters.date_to"></date-picker>
                     </div>
-                  
+
                     <div class="col-md-3">
                         <input type="text" v-model="filters.mobile" class="form-control" placeholder="شماره موبایل" />
                     </div>
@@ -291,7 +295,38 @@ import Modal from "@/components/shared/modal.vue";
 
 const store = useAdmin();
 const checkPermission = store.checkPermission;
+const exportExcel = async () => {
+    try {
+        loading.value = true;
 
+        const response = await axios.get('/reports/users/purchases', {
+            params: {
+                ...filters.value,
+                export: 'excel',
+            },
+            responseType: 'blob',
+        });
+
+        // ایجاد لینک دانلود
+        const blob = new Blob([response.data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `user-purchase-report-${new Date().toISOString().slice(0, 10)}.xlsx`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error('Error exporting Excel:', error);
+        alert('خطا در دانلود فایل Excel');
+    } finally {
+        loading.value = false;
+    }
+};
 // Utility functions
 function formatCurrency(value) {
     if (!value && value !== 0) return "۰";

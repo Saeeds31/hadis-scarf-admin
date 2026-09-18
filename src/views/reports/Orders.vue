@@ -7,158 +7,93 @@
           <i class="bi bi-receipt"></i>
           <span>گزارش سفارشات</span>
         </h3>
-        <b-spinner small v-if="loading"></b-spinner>
+        <div class="d-flex align-items-center gap-2">
+          <b-spinner small v-if="loading"></b-spinner>
+          <button @click="exportExcel" class="btn btn-success btn-sm" :disabled="loading || !tableData.data?.length">
+            <i class="bi bi-file-earmark-excel"></i>
+            <span class="mx-1">خروجی Excel</span>
+          </button>
+        </div>
       </div>
       <div class="card-body">
         <form @submit.prevent="getReport()" class="row g-3">
           <!-- تاریخ -->
           <div class="col-md-2">
-            <date-picker
-              display-format="jYYYY/jMM/jDD"
-              placeholder="از تاریخ"
-              format="YYYY-MM-DD"
-              v-model="filters.date_from"
-            ></date-picker>
+            <date-picker display-format="jYYYY/jMM/jDD" placeholder="از تاریخ" format="YYYY-MM-DD"
+              v-model="filters.date_from"></date-picker>
           </div>
           <div class="col-md-2">
-            <date-picker
-              display-format="jYYYY/jMM/jDD"
-              placeholder="تا تاریخ"
-              format="YYYY-MM-DD"
-              v-model="filters.date_to"
-            ></date-picker>
+            <date-picker display-format="jYYYY/jMM/jDD" placeholder="تا تاریخ" format="YYYY-MM-DD"
+              v-model="filters.date_to"></date-picker>
           </div>
-          
+
           <!-- وضعیت سفارش -->
           <div class="col-md-2">
-            <multiselect
-              v-model="filters.status"
-              placeholder="وضعیت سفارش"
-              open-direction="bottom"
-              :options="filterOptions.statuses"
-              label="label"
-              track-by="value"
-              :searchable="true"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              class="multiselect-rtl"
-            >
+            <multiselect v-model="filters.status" placeholder="وضعیت سفارش" open-direction="bottom"
+              :options="filterOptions.statuses" label="label" track-by="value" :searchable="true" :multiple="false"
+              :close-on-select="true" :show-labels="false" class="multiselect-rtl">
               <template slot="option" slot-scope="props">
                 <span>{{ props.option.label }}</span>
               </template>
             </multiselect>
           </div>
-          
+
           <!-- وضعیت پرداخت -->
           <div class="col-md-2">
-            <multiselect
-              v-model="filters.payment_status"
-              placeholder="وضعیت پرداخت"
-              open-direction="bottom"
-              :options="filterOptions.payment_statuses"
-              label="label"
-              track-by="value"
-              :searchable="true"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              class="multiselect-rtl"
-            >
+            <multiselect v-model="filters.payment_status" placeholder="وضعیت پرداخت" open-direction="bottom"
+              :options="filterOptions.payment_statuses" label="label" track-by="value" :searchable="true"
+              :multiple="false" :close-on-select="true" :show-labels="false" class="multiselect-rtl">
               <template slot="option" slot-scope="props">
                 <span>{{ props.option.label }}</span>
               </template>
             </multiselect>
           </div>
-          
+
           <!-- روش پرداخت -->
           <div class="col-md-2">
-            <multiselect
-              v-model="filters.payment_method"
-              placeholder="روش پرداخت"
-              open-direction="bottom"
-              :options="filterOptions.payment_methods"
-              label="label"
-              track-by="value"
-              :searchable="true"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              class="multiselect-rtl"
-            >
+            <multiselect v-model="filters.payment_method" placeholder="روش پرداخت" open-direction="bottom"
+              :options="filterOptions.payment_methods" label="label" track-by="value" :searchable="true"
+              :multiple="false" :close-on-select="true" :show-labels="false" class="multiselect-rtl">
               <template slot="option" slot-scope="props">
                 <span>{{ props.option.label }}</span>
               </template>
             </multiselect>
           </div>
-          
+
           <!-- استان -->
           <div class="col-md-2">
-            <multiselect
-              v-model="filters.province"
-              placeholder="استان"
-              open-direction="bottom"
-              :options="filterOptions.provinces"
-              :searchable="true"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              class="multiselect-rtl"
-            >
+            <multiselect v-model="filters.province" placeholder="استان" open-direction="bottom"
+              :options="filterOptions.provinces" :searchable="true" :multiple="false" :close-on-select="true"
+              :show-labels="false" class="multiselect-rtl">
             </multiselect>
           </div>
-          
+
           <!-- شهر -->
           <div class="col-md-2">
-            <input
-              type="text"
-              v-model="filters.city"
-              class="form-control"
-              placeholder="شهر"
-            />
+            <input type="text" v-model="filters.city" class="form-control" placeholder="شهر" />
           </div>
-          
+
           <!-- روش حمل و نقل -->
           <div class="col-md-2">
-            <multiselect
-              v-model="filters.shipping_method_id"
-              placeholder="روش حمل"
-              open-direction="bottom"
-              :options="filterOptions.shipping_methods"
-              label="name"
-              track-by="id"
-              :searchable="true"
-              :multiple="false"
-              :close-on-select="true"
-              :show-labels="false"
-              class="multiselect-rtl"
-            >
+            <multiselect v-model="filters.shipping_method_id" placeholder="روش حمل" open-direction="bottom"
+              :options="filterOptions.shipping_methods" label="name" track-by="id" :searchable="true" :multiple="false"
+              :close-on-select="true" :show-labels="false" class="multiselect-rtl">
               <template slot="option" slot-scope="props">
                 <span>{{ props.option.name }}</span>
               </template>
             </multiselect>
           </div>
-          
+
           <!-- حداقل قیمت -->
           <div class="col-md-2">
-            <input
-              type="number"
-              v-model="filters.min_total"
-              class="form-control"
-              placeholder="حداقل قیمت"
-            />
+            <input type="number" v-model="filters.min_total" class="form-control" placeholder="حداقل قیمت" />
           </div>
-          
+
           <!-- حداکثر قیمت -->
           <div class="col-md-2">
-            <input
-              type="number"
-              v-model="filters.max_total"
-              class="form-control"
-              placeholder="حداکثر قیمت"
-            />
+            <input type="number" v-model="filters.max_total" class="form-control" placeholder="حداکثر قیمت" />
           </div>
-          
+
           <!-- کد تخفیف -->
           <div class="col-md-2">
             <select v-model="filters.has_coupon" class="form-select">
@@ -167,7 +102,7 @@
               <option value="0">بدون تخفیف</option>
             </select>
           </div>
-          
+
           <div class="col-12">
             <button type="submit" class="btn btn-primary w-100">
               <i class="bi bi-search"></i>
@@ -231,14 +166,16 @@
                   <thead class="table-light">
                     <tr>
                       <th @click="sortBy('id')" style="cursor: pointer;">
-                        شناسه 
-                        <i v-if="sortField === 'id'" :class="sortOrder === 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
+                        شناسه
+                        <i v-if="sortField === 'id'"
+                          :class="sortOrder === 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
                       </th>
                       <th>مشتری</th>
                       <th>مبلغ کل</th>
                       <th @click="sortBy('total')" style="cursor: pointer;">
                         تخفیف
-                        <i v-if="sortField === 'total'" :class="sortOrder === 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
+                        <i v-if="sortField === 'total'"
+                          :class="sortOrder === 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
                       </th>
                       <th>وضعیت</th>
                       <th>پرداخت</th>
@@ -246,7 +183,8 @@
                       <th>استان</th>
                       <th @click="sortBy('created_at')" style="cursor: pointer;">
                         تاریخ
-                        <i v-if="sortField === 'created_at'" :class="sortOrder === 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
+                        <i v-if="sortField === 'created_at'"
+                          :class="sortOrder === 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
                       </th>
                       <th>عملیات</th>
                     </tr>
@@ -285,17 +223,11 @@
                   </tbody>
                 </table>
               </div>
-              
+
               <!-- Pagination -->
-              <b-pagination
-                v-if="tableData.last_page > 1"
-                v-model="currentPage"
-                :total-rows="tableData.total"
-                :per-page="tableData.per_page"
-                @update:modelValue="changePage"
-                align="center"
-                class="mt-3"
-              ></b-pagination>
+              <b-pagination v-if="tableData.last_page > 1" v-model="currentPage" :total-rows="tableData.total"
+                :per-page="tableData.per_page" @update:modelValue="changePage" align="center"
+                class="mt-3"></b-pagination>
             </div>
           </div>
         </b-tab>
@@ -320,7 +252,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- نمودار فروش ماهانه -->
             <div class="col-md-6 mb-4">
               <div class="card">
@@ -338,7 +270,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- نمودار تفکیک وضعیت -->
             <div class="col-md-4 mb-4">
               <div class="card">
@@ -355,7 +287,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- نمودار تفکیک روش پرداخت -->
             <div class="col-md-4 mb-4">
               <div class="card">
@@ -372,7 +304,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- نمودار تفکیک استان‌ها -->
             <div class="col-md-4 mb-4">
               <div class="card">
@@ -395,12 +327,8 @@
     </div>
 
     <!-- مودال جزئیات سفارش -->
-    <Modal
-      v-if="showModal"
-      id="orderDetailModal"
-      @closeModal="() => { showModal = false; selectedOrder = null; }"
-      :title="'جزئیات سفارش #' + selectedOrder?.id"
-    >
+    <Modal v-if="showModal" id="orderDetailModal" @closeModal="() => { showModal = false; selectedOrder = null; }"
+      :title="'جزئیات سفارش #' + selectedOrder?.id">
       <div v-if="selectedOrder">
         <div class="row mb-4">
           <div class="col-md-6">
@@ -416,7 +344,7 @@
             <p><strong>روش پرداخت:</strong> {{ translatePaymentMethod(selectedOrder.payment_method) }}</p>
           </div>
         </div>
-        
+
         <div class="row mb-4">
           <div class="col-md-6">
             <h6>آدرس</h6>
@@ -431,7 +359,7 @@
             <p><strong>هزینه:</strong> {{ formatCurrency(selectedOrder.shipping_cost) }}</p>
           </div>
         </div>
-        
+
         <h6>محصولات</h6>
         <div class="table-responsive">
           <table class="table table-sm table-striped">
@@ -447,7 +375,7 @@
             <tbody>
               <tr v-for="item in selectedOrder.items" :key="item.id">
                 <td>{{ item.product?.title || 'محصول حذف شده' }}</td>
-                <td>{{ item.variant?.values?.map(v => v.value).join(' - ') || '-' }}</td>
+                <td>{{item.variant?.values?.map(v => v.value).join(' - ') || '-'}}</td>
                 <td>{{ item.quantity }}</td>
                 <td>{{ formatCurrency(item.price) }}</td>
                 <td>{{ formatCurrency(item.price * item.quantity) }}</td>
@@ -554,7 +482,47 @@ function getPaymentStatusBadgeClass(status) {
   };
   return map[status] || 'bg-secondary';
 }
+const exportExcel = async () => {
+  try {
+    loading.value = true;
 
+    const params = {
+      ...filters.value,
+      sort_by: sortField.value,
+      sort_order: sortOrder.value,
+      export: 'excel',
+    };
+
+    // حذف مقادیر خالی
+    Object.keys(params).forEach(key => {
+      if (params[key] === '' || params[key] === null || params[key] === undefined) {
+        delete params[key];
+      }
+    });
+
+    const response = await axios.get('/reports/orders', {
+      params,
+      responseType: 'blob',
+    });
+
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `orders-report-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error exporting Excel:', error);
+    alert('خطا در دانلود فایل Excel');
+  } finally {
+    loading.value = false;
+  }
+};
 // Chart components
 const BarChart = {
   props: ['chartData'],
@@ -643,9 +611,9 @@ const selectedOrder = ref(null);
 const dailyChartData = computed(() => {
   const data = charts.value.daily_sales || [];
   if (!data.length) return null;
-  
+
   const sorted = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
-  
+
   return {
     labels: sorted.map(d => formatDate(d.date)),
     datasets: [
@@ -672,9 +640,9 @@ const dailyChartData = computed(() => {
 const monthlyChartData = computed(() => {
   const data = charts.value.monthly_sales || [];
   if (!data.length) return null;
-  
+
   const sorted = [...data].sort((a, b) => a.month.localeCompare(b.month));
-  
+
   return {
     labels: sorted.map(d => {
       const [year, month] = d.month.split('-');
@@ -696,9 +664,9 @@ const monthlyChartData = computed(() => {
 const statusChartData = computed(() => {
   const data = charts.value.status || [];
   if (!data.length) return null;
-  
+
   const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6b7280'];
-  
+
   return {
     labels: data.map(d => translateStatus(d.status)),
     datasets: [
@@ -714,9 +682,9 @@ const statusChartData = computed(() => {
 const paymentMethodChartData = computed(() => {
   const data = charts.value.payment_method || [];
   if (!data.length) return null;
-  
+
   const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
-  
+
   return {
     labels: data.map(d => translatePaymentMethod(d.payment_method)),
     datasets: [
@@ -732,9 +700,9 @@ const paymentMethodChartData = computed(() => {
 const provinceChartData = computed(() => {
   const data = charts.value.province || [];
   if (!data.length) return null;
-  
+
   const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
-  
+
   return {
     labels: data.map(d => d.province),
     datasets: [
@@ -758,14 +726,14 @@ const getReport = async (page = 1) => {
       sort_by: sortField.value,
       sort_order: sortOrder.value,
     };
-    
+
     // حذف مقادیر خالی
     Object.keys(params).forEach(key => {
       if (params[key] === '' || params[key] === null || params[key] === undefined) {
         delete params[key];
       }
     });
-    
+
     const { data } = await axios.get('/reports/orders', { params });
     tableData.value = data.data;
     summary.value = data.summary;

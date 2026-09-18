@@ -556,14 +556,17 @@ function imagesLoaded(files) {
   form.value.images = files.map((f) => f.file)
 }
 function imageDeleted(fileRecord, removeFn) {
+  let adddress = 'https://api.hadis-scarf.ir/storage_public/'
+  let finded = product.value.images.find((img) => adddress + img.path == fileRecord.urlValue)
   // اگه عکس از تصاویر قدیمی (دارای id) بود، برای حذف سمت سرور علامت بزن
-  if (fileRecord.id) {
-    deletedImages.value.push(fileRecord.id)
+  if (finded) {
+    deletedImages.value.push(finded.id)
   } else {
     // عکس تازه‌آپلودشده‌ای که هنوز سیو نشده، فقط از لیست ارسال خارج می‌شه
     form.value.images = form.value.images.filter((f) => f !== fileRecord.file)
   }
-  removeFn()
+  if (removeFn)
+    removeFn()
 }
 
 // آپلودر تصویر اصلی (تکی)

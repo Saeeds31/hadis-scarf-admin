@@ -351,6 +351,84 @@
                                 <div class="label-top">
 
                                     <div class="label-brand">
+                                        <div class="mini-logo">
+                                            <i class="bi bi-bag-heart-fill"></i>
+                                        </div>
+
+                                        <div>
+                                            <strong>اطلاعات گیرنده:</strong>
+                                            <span>SHIPPING LABEL</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="label-number">
+                                        <small>شناسه سفارش</small>
+                                        <strong>#{{ String(order.id).padStart(5, '0') }}</strong>
+                                    </div>
+
+                                </div>
+
+                                <div class="label-route">
+
+                                    <div class="route-title">
+                                        <span class="route-line"></span>
+                                        <i class="bi bi-arrow-down-circle-fill"></i>
+                                        <span>ارسال به</span>
+                                    </div>
+
+                                    <div class="receiver-name">
+                                        {{ order.user?.full_name ?? '-' }}
+                                    </div>
+
+                                    <div class="receiver-phone">
+                                        <i class="bi bi-telephone-fill"></i>
+                                        {{ order.user?.mobile ?? '-' }}
+                                    </div>
+
+                                    <div class="receiver-address">
+                                        {{ order.address?.address_line ?? '-' }}
+                                    </div>
+
+                                    <div class="receiver-location">
+                                        <span>
+                                            {{ order.address?.province?.name ?? '-' }}
+                                            -
+                                            {{ order.address?.city?.name ?? '-' }}
+                                        </span>
+
+                                        <strong>
+                                            کد پستی:
+                                            {{ order.address?.postal_code ?? '-' }}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                                <div class="label-bottom">
+
+                                    <div>
+                                        <small>روش ارسال</small>
+                                        <strong>
+                                            {{ order.shipping?.title ?? '-' }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="label-price">
+                                        <small>مبلغ سفارش</small>
+                                        <strong>
+                                            {{ Number(order.total).toLocaleString('fa-IR') }}
+                                            <em>تومان</em>
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="label-card">
+
+                                <div class="label-top">
+
+                                    <div class="label-brand">
                                         <div class="mini-logo overflow-hidden">
                                             <img src="@/assets/images/logo.png" width="72" alt="">
 
@@ -429,84 +507,7 @@
                                 </div>
 
                             </div>
-                            <div class="label-card">
 
-                                <div class="label-top">
-
-                                    <div class="label-brand">
-                                        <div class="mini-logo">
-                                            <i class="bi bi-bag-heart-fill"></i>
-                                        </div>
-
-                                        <div>
-                                            <strong>اطلاعات گیرنده:</strong>
-                                            <span>SHIPPING LABEL</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="label-number">
-                                        <small>شناسه سفارش</small>
-                                        <strong>#{{ String(order.id).padStart(5, '0') }}</strong>
-                                    </div>
-
-                                </div>
-
-                                <div class="label-route">
-
-                                    <div class="route-title">
-                                        <span class="route-line"></span>
-                                        <i class="bi bi-arrow-down-circle-fill"></i>
-                                        <span>ارسال به</span>
-                                    </div>
-
-                                    <div class="receiver-name">
-                                        {{ order.user?.full_name ?? '-' }}
-                                    </div>
-
-                                    <div class="receiver-phone">
-                                        <i class="bi bi-telephone-fill"></i>
-                                        {{ order.user?.mobile ?? '-' }}
-                                    </div>
-
-                                    <div class="receiver-address">
-                                        {{ order.address?.address_line ?? '-' }}
-                                    </div>
-
-                                    <div class="receiver-location">
-                                        <span>
-                                            {{ order.address?.province?.name ?? '-' }}
-                                            -
-                                            {{ order.address?.city?.name ?? '-' }}
-                                        </span>
-
-                                        <strong>
-                                            کد پستی:
-                                            {{ order.address?.postal_code ?? '-' }}
-                                        </strong>
-                                    </div>
-
-                                </div>
-
-                                <div class="label-bottom">
-
-                                    <div>
-                                        <small>روش ارسال</small>
-                                        <strong>
-                                            {{ order.shipping?.title ?? '-' }}
-                                        </strong>
-                                    </div>
-
-                                    <div class="label-price">
-                                        <small>مبلغ سفارش</small>
-                                        <strong>
-                                            {{ Number(order.total).toLocaleString('fa-IR') }}
-                                            <em>تومان</em>
-                                        </strong>
-                                    </div>
-
-                                </div>
-
-                            </div>
                         </template>
 
                     </div>

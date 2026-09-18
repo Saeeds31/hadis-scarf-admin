@@ -7,7 +7,13 @@
           <i class="bi bi-palette"></i>
           <span>گزارش فروش تنوع‌ها</span>
         </h3>
-        <b-spinner small v-if="loading"></b-spinner>
+        <div class="d-flex align-items-center gap-2">
+          <b-spinner small v-if="loading"></b-spinner>
+          <button @click="exportExcel" class="btn btn-success btn-sm" :disabled="loading || !reportData.length">
+            <i class="bi bi-file-earmark-excel"></i>
+            <span class="mx-1">خروجی Excel</span>
+          </button>
+        </div>
       </div>
       <div class="card-body">
         <form @submit.prevent="getReport()" class="row g-3">
@@ -512,7 +518,45 @@ const searchProducts = async (search) => {
     loadingProducts.value = false;
   }
 };
+const exportExcel = async () => {
+  try {
+    loading.value = true;
 
+    const params = { ...filters.value };
+    // حذف مقادیر خالی
+    Object.keys(params).forEach(key => {
+      if (params[key] === null || params[key] === undefined || params[key] === '') {
+        delete params[key];
+      }
+    });
+    if (selectedProduct.value) {
+      params.product_id = selectedProduct.value.id;
+    }
+    params.export = 'excel';
+
+    const response = await axios.get('/reports/variants/sales', {
+      params,
+      responseType: 'blob',
+    });
+
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `variant-sales-report-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error exporting Excel:', error);
+    alert('خطا در دانلود فایل Excel');
+  } finally {
+    loading.value = false;
+  }
+};
 const loadAttributes = async () => {
   try {
     const { data } = await axios.get('/attributes');
