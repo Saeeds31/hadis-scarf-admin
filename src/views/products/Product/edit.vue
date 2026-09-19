@@ -194,6 +194,7 @@
                   <th v-for="attributeId in attributesWithValues" :key="attributeId">
                     {{ attrName(attributeId) }}
                   </th>
+                  <th>راهنمای جمع آوری</th>
                   <th>SKU</th>
                   <th>قیمت</th>
                   <th>موجودی</th>
@@ -204,6 +205,7 @@
                   <td v-for="(AV, idx) in variant.values" :key="idx">
                     {{ AV ? AV.value : '' }}
                   </td>
+                  <td><input v-model="variant.admin_note" class="form-control" /></td>
                   <td><input v-model="variant.sku" class="form-control" /></td>
                   <td><input v-model="variant.price" type="number" class="form-control" /></td>
                   <td><input v-model="variant.stock" type="number" class="form-control" /></td>
@@ -378,6 +380,7 @@ function generateCombinations() {
           uid,
           id: '',
           sku: '',
+          admin_note:'',
           price: '',
           stock: '',
           values: values.map((v) => ({ id: v.id, value: v.value })),
@@ -530,6 +533,7 @@ async function loadProduct() {
         uid,
         id: v.id,
         sku: v.sku,
+        admin_note: v.admin_note,
         stock: v.stock,
         values: v.values.map((val) => ({ id: val.id, value: val.value })),
       })
@@ -678,6 +682,7 @@ async function saveStep2() {
   validVariants.forEach((v, index) => {
     formData.append(`variants[${index}][id]`, v.id || '')
     formData.append(`variants[${index}][sku]`, v.sku || '')
+    formData.append(`variants[${index}][admin_note]`, v.admin_note || '')
     formData.append(`variants[${index}][price]`, v.price || 0)
     formData.append(`variants[${index}][stock]`, v.stock ?? 0)
     v.values.forEach((AV) => {

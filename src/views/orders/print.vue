@@ -1,4 +1,3 @@
-```vue
 <template>
     <div class="print-wrapper" v-if="checkPermission(['order_view'])">
 
@@ -70,8 +69,6 @@
         <!-- ================= PRINT ================= -->
         <div id="printSection">
 
-
-
             <div class="print-body">
 
                 <!-- ================= FULL PRINT ================= -->
@@ -134,7 +131,7 @@
 
                                         <strong class="info-line info-card-content">
                                             <i class="bi bi-phone"></i>
-                                            <storng>{{ order.user?.mobile ?? '-' }}</storng>
+                                            <strong>{{ order.user?.mobile ?? '-' }}</strong>
                                         </strong>
                                     </div>
                                 </div>
@@ -237,9 +234,12 @@
 
                                             <td class="product-name">
                                                 {{ item.product?.title ?? '-' }}
+                                                <strong v-if="item.variant?.admin_note" class="variant-tag">
+                                                    {{ item.variant?.admin_note }}
+                                                </strong>
                                             </td>
 
-                                            <td class="variants  info-card-content">
+                                            <td class="variants info-card-content">
                                                 <template v-if="item.variant?.values?.length">
                                                     <strong v-for="val in item.variant.values" :key="val.id"
                                                         class="variant-tag">
@@ -407,17 +407,17 @@
                                 <div class="label-bottom">
 
                                     <div>
-                                        <small>روش ارسال</small>
+                                        <small></small>
                                         <strong>
-                                            {{ order.shipping?.title ?? '-' }}
+                                            روش ارسال
                                         </strong>
                                     </div>
 
                                     <div class="label-price">
-                                        <small>مبلغ سفارش</small>
+                                        <small></small>
                                         <strong>
-                                            {{ Number(order.total).toLocaleString('fa-IR') }}
-                                            <em>تومان</em>
+                                            {{ order.shipping?.title ?? '-' }}
+
                                         </strong>
                                     </div>
 
@@ -491,14 +491,14 @@
                                 <div class="label-bottom">
 
                                     <div>
-                                        <small>Hadis Scarf</small>
+                                        <small></small>
                                         <strong>
-                                            فروشگاه شال و روسی
+                                            تاریخ سفارش
                                         </strong>
                                     </div>
 
                                     <div class="label-price">
-                                        <small>تاریخ سفارش</small>
+                                        <small></small>
                                         <strong>
                                             {{ new Date(order.created_at).toLocaleDateString('fa-IR') }}
                                         </strong>
@@ -581,6 +581,11 @@ const handlePrint = () => {
                     margin: 0;
                     padding: 0;
                     box-sizing: border-box;
+
+                    /* 🔑 چاپ دقیق رنگ‌ها و پس‌زمینه‌ها */
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                    color-adjust: exact !important;
                 }
 
                 @page {
@@ -598,17 +603,34 @@ const handlePrint = () => {
                         sans-serif;
 
                     background: #fff;
-                    color: #18181b;
+                    color: #000;
                     line-height: 1.7;
                     font-size: 15px;
+                    font-weight: 700;
+
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
+
+                /* ==================== همه متن‌ها پررنگ ==================== */
+
+                body, p, span, div, strong, small, em, i, th, td, h1, h2, h3, h4 {
+                    color: #000 !important;
+                    font-weight: 700;
+                }
+
+                strong, b {
+                    font-weight: 900 !important;
+                }
+
+                /* ==================== HEADER ==================== */
 
                 .print-header {
                     display: flex !important;
                     align-items: center;
                     justify-content: space-between;
                     padding-bottom: 22px;
-                    border-bottom: 1px solid #e4e4e7;
+                    border-bottom: 1px solid #000;
                     margin-bottom: 20px;
                 }
 
@@ -621,7 +643,7 @@ const handlePrint = () => {
                 .invoice-logo {
                     width: 48px;
                     height: 48px;
-                    border: 1px solid #18181b;
+                    border: 1px solid #000;
                     border-radius: 14px;
                     display: flex;
                     align-items: center;
@@ -633,13 +655,14 @@ const handlePrint = () => {
                     font-size: 23px;
                     margin: 0;
                     font-weight: 900;
-                    color: #111113;
+                    color: #000;
                 }
 
                 .invoice-brand p {
                     margin: 2px 0 0;
-                    color: #71717a;
+                    color: #000;
                     font-size: 12px;
+                    font-weight: 700;
                 }
 
                 .invoice-meta {
@@ -650,14 +673,16 @@ const handlePrint = () => {
 
                 .invoice-meta-item span {
                     display: block;
-                    color: #a1a1aa;
+                    color: #000;
                     font-size: 11px;
                     margin-bottom: 2px;
+                    font-weight: 800;
                 }
 
                 .invoice-meta-item strong {
                     font-size: 14px;
-                    font-weight: 800;
+                    font-weight: 900;
+                    color: #000;
                 }
 
                 .print-title {
@@ -670,7 +695,7 @@ const handlePrint = () => {
                 .print-title > span {
                     flex: 1;
                     height: 1px;
-                    background: #e4e4e7;
+                    background: #000;
                 }
 
                 .print-title div {
@@ -679,20 +704,24 @@ const handlePrint = () => {
 
                 .print-title small {
                     display: block;
-                    color: #a1a1aa;
+                    color: #000;
                     font-size: 10px;
                     letter-spacing: 2px;
                     direction: ltr;
+                    font-weight: 700;
                 }
 
                 .print-title strong {
                     display: block;
                     font-size: 17px;
                     font-weight: 900;
+                    color: #000;
                 }
 
+                /* ==================== ORDER CARD ==================== */
+
                 .order-card {
-                    border: 1px solid #e4e4e7;
+                    border: 1.5px solid #000;
                     border-radius: 14px;
                     overflow: hidden;
                     margin-bottom: 25px;
@@ -705,8 +734,10 @@ const handlePrint = () => {
                     align-items: center;
                     justify-content: space-between;
                     padding: 15px 18px;
-                    background: #fafafa;
-                    border-bottom: 1px solid #e4e4e7;
+                    background: #f2f2f2 !important;
+                    border-bottom: 1.5px solid #000;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .order-main {
@@ -717,13 +748,15 @@ const handlePrint = () => {
 
                 .order-id-box small {
                     display: block;
-                    font-size: 10px;
-                    color: #a1a1aa;
+                    font-size: 11px;
+                    color: #000;
+                    font-weight: 800;
                 }
 
                 .order-id-box strong {
                     font-size: 19px;
                     font-weight: 900;
+                    color: #000;
                 }
 
                 .order-statuses {
@@ -739,47 +772,31 @@ const handlePrint = () => {
                     border-radius: 999px;
                     padding: 4px 9px;
                     font-size: 11px;
-                    font-weight: 700;
-                    background: #f4f4f5;
-                    color: #52525b;
+                    font-weight: 900;
+                    background: #e8e8e8 !important;
+                    color: #000 !important;
+                    border: 1px solid #666;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .status-badge i {
                     font-size: 7px;
+                    color: #000 !important;
                 }
 
                 .status-completed,
-                .payment-paid {
-                    background: #ecfdf5;
-                    color: #047857;
-                }
-
+                .payment-paid,
                 .status-pending,
-                .payment-pending {
-                    background: #fffbeb;
-                    color: #b45309;
-                }
-
-                .status-processing {
-                    background: #eff6ff;
-                    color: #1d4ed8;
-                }
-
-                .status-shipped {
-                    background: #f5f3ff;
-                    color: #6d28d9;
-                }
-
+                .payment-pending,
+                .status-processing,
+                .status-shipped,
                 .status-canceled,
-                .payment-failed {
-                    background: #fef2f2;
-                    color: #b91c1c;
-                }
-
+                .payment-failed,
                 .status-returned,
                 .payment-refunded {
-                    background: #f4f4f5;
-                    color: #52525b;
+                    background: #e8e8e8 !important;
+                    color: #000 !important;
                 }
 
                 .order-date {
@@ -788,18 +805,23 @@ const handlePrint = () => {
 
                 .order-date span {
                     display: block;
-                    color: #a1a1aa;
-                    font-size: 10px;
+                    color: #000;
+                    font-size: 11px;
+                    font-weight: 800;
                 }
 
                 .order-date strong {
                     display: block;
                     font-size: 12px;
+                    font-weight: 900;
+                    color: #000;
                 }
 
                 .order-body {
                     padding: 18px;
                 }
+
+                /* ==================== INFO CARDS ==================== */
 
                 .info-grid {
                     display: grid;
@@ -809,7 +831,7 @@ const handlePrint = () => {
                 }
 
                 .info-card {
-                    border: 1px solid #ededed;
+                    border: 1.5px solid #000;
                     border-radius: 10px;
                     padding: 12px;
                     background: #fff;
@@ -822,47 +844,65 @@ const handlePrint = () => {
                     gap: 7px;
                     padding-bottom: 8px;
                     margin-bottom: 8px;
-                    border-bottom: 1px solid #f1f1f1;
-                    font-size: 11px;
-                    color: #71717a;
-                    font-weight: 700;
+                    border-bottom: 1.5px solid #000;
+                    font-size: 12px;
+                    color: #000;
+                    font-weight: 900;
                 }
 
                 .info-icon {
                     width: 26px;
                     height: 26px;
                     border-radius: 8px;
-                    background: #18181b;
-                    color: #fff;
+                    background: #000 !important;
+                    color: #fff !important;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     font-size: 13px;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+
+                .info-icon i {
+                    color: #fff !important;
                 }
 
                 .info-card-content > strong {
                     display: block;
                     font-size: 13px;
-                    font-weight: 800;
+                    font-weight: 900;
                     margin-bottom: 5px;
+                    color: #000;
                 }
 
                 .info-line {
                     display: flex;
                     align-items: center;
                     gap: 5px;
-                    color: #52525b;
-                    font-size: 11px;
-                    margin-top: 3px;
+                    color: #000;
+                    font-size: 12px;
+                    margin-top: 4px;
+                    font-weight: 700;
                 }
 
                 .info-line i {
-                    color: #a1a1aa;
+                    color: #000 !important;
+                }
+
+                .info-line strong,
+                .info-line span {
+                    color: #000 !important;
+                    font-weight: 900;
                 }
 
                 .address-text {
                     line-height: 1.8;
+                    font-weight: 900;
+                    color: #000;
                 }
+
+                /* ==================== SECTION TITLE ==================== */
 
                 .section-title {
                     display: flex;
@@ -874,26 +914,30 @@ const handlePrint = () => {
                 .section-title:before {
                     content: "";
                     display: block;
-                    width: 3px;
-                    height: 25px;
-                    background: #18181b;
+                    width: 4px;
+                    height: 28px;
+                    background: #000;
                     border-radius: 5px;
                 }
 
                 .section-title span {
                     display: block;
-                    font-size: 13px;
+                    font-size: 14px;
                     font-weight: 900;
+                    color: #000;
                 }
 
                 .section-title small {
                     display: block;
-                    color: #a1a1aa;
+                    color: #000;
                     font-size: 11px;
+                    font-weight: 700;
                 }
 
+                /* ==================== PRODUCTS TABLE ==================== */
+
                 .products-table {
-                    border: 1px solid #e4e4e7;
+                    border: 1.5px solid #000;
                     border-radius: 9px;
                     overflow: hidden;
                 }
@@ -904,26 +948,50 @@ const handlePrint = () => {
                 }
 
                 .products-table thead {
-                    background: #18181b;
-                    color: #fff;
+                    display: table-header-group; /* 🔑 تکرار سرستون در صفحه بعد */
+                    background: #000 !important;
+                    color: #fff !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .products-table th {
-                    padding: 8px 7px;
-                    font-size: 10px;
-                    font-weight: 700;
+                    padding: 9px 7px;
+                    font-size: 11px;
+                    font-weight: 900;
                     white-space: nowrap;
+                    background: #000 !important;
+                    color: #fff !important;
+                    border: 1px solid #000;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+
+                .products-table th strong {
+                    color: #fff !important;
+                    font-weight: 900;
                 }
 
                 .products-table td {
-                    padding: 9px 7px;
-                    border-bottom: 1px solid #f0f0f0;
+                    padding: 10px 7px;
+                    border-bottom: 1px solid #888;
+                    border-right: 1px solid #888;
+                    border-left: 1px solid #888;
                     text-align: center;
-                    font-size: 11px;
+                    font-size: 12px;
+                    font-weight: 800;
+                    color: #000 !important;
+                    background: #fff;
                 }
 
                 .products-table tr:last-child td {
-                    border-bottom: 0;
+                    border-bottom: 1.5px solid #000;
+                }
+
+                .products-table tbody tr:nth-child(even) td {
+                    background: #f2f2f2 !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .product-col {
@@ -932,26 +1000,32 @@ const handlePrint = () => {
 
                 .product-name {
                     text-align: right !important;
-                    font-weight: 800;
+                    font-weight: 900;
+                    color: #000 !important;
                 }
 
                 .index-cell {
-                    color: #a1a1aa;
-                    font-weight: 700;
+                    color: #000 !important;
+                    font-weight: 900;
                 }
 
                 .variant-tag {
                     display: inline-block;
-                    background: #f4f4f5;
-                    border: 1px solid #e4e4e7;
+                    background: #e8e8e8 !important;
+                    border: 1px solid #666;
                     padding: 2px 6px;
                     border-radius: 5px;
-                    font-size: 9px;
+                    font-size: 10px;
                     margin: 1px;
+                    color: #000 !important;
+                    font-weight: 800;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .muted {
-                    color: #a1a1aa;
+                    color: #000 !important;
+                    font-weight: 700;
                 }
 
                 .quantity span {
@@ -961,18 +1035,25 @@ const handlePrint = () => {
                     align-items: center;
                     justify-content: center;
                     border-radius: 6px;
-                    background: #f4f4f5;
-                    font-weight: 800;
+                    background: #e8e8e8 !important;
+                    font-weight: 900;
+                    color: #000 !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .products-table td small {
-                    color: #a1a1aa;
-                    font-size: 9px;
+                    color: #000 !important;
+                    font-size: 10px;
+                    font-weight: 700;
                 }
 
                 .total-price {
                     font-weight: 900;
+                    color: #000 !important;
                 }
+
+                /* ==================== BOTTOM SECTION ==================== */
 
                 .bottom-section {
                     display: flex;
@@ -986,35 +1067,43 @@ const handlePrint = () => {
                     display: flex;
                     align-items: center;
                     gap: 9px;
-                    color: #52525b;
+                    color: #000;
                 }
 
                 .thank-icon {
                     width: 34px;
                     height: 34px;
                     border-radius: 10px;
-                    background: #18181b;
-                    color: white;
+                    background: #000 !important;
+                    color: #fff !important;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+
+                .thank-icon i {
+                    color: #fff !important;
                 }
 
                 .thank-message strong {
                     display: block;
                     font-size: 12px;
-                    color: #18181b;
+                    color: #000;
+                    font-weight: 900;
                 }
 
                 .thank-message span {
                     display: block;
-                    font-size: 10px;
-                    color: #a1a1aa;
+                    font-size: 11px;
+                    color: #000;
+                    font-weight: 700;
                 }
 
                 .summary {
                     width: 300px;
-                    border: 1px solid #e4e4e7;
+                    border: 1.5px solid #000;
                     border-radius: 10px;
                     overflow: hidden;
                 }
@@ -1023,22 +1112,31 @@ const handlePrint = () => {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    padding: 7px 11px;
-                    font-size: 11px;
-                    border-bottom: 1px solid #f1f1f1;
+                    padding: 8px 11px;
+                    font-size: 12px;
+                    border-bottom: 1px solid #888;
+                    color: #000;
+                    font-weight: 700;
                 }
 
-                .summary-row strong {
+                .summary-row span {
+                    color: #000 !important;
                     font-weight: 800;
                 }
 
+                .summary-row strong {
+                    font-weight: 900;
+                    color: #000 !important;
+                }
+
                 .summary-row small {
-                    font-size: 9px;
-                    color: #a1a1aa;
+                    font-size: 10px;
+                    color: #000 !important;
+                    font-weight: 700;
                 }
 
                 .discount-row strong {
-                    color: #b91c1c;
+                    color: #b91c1c !important;
                 }
 
                 .summary-total {
@@ -1046,49 +1144,59 @@ const handlePrint = () => {
                     align-items: center;
                     justify-content: space-between;
                     padding: 12px;
-                    background: #18181b;
-                    color: #fff;
+                    background: #000 !important;
+                    color: #fff !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .summary-total span {
                     display: block;
                     font-size: 12px;
-                    font-weight: 800;
+                    font-weight: 900;
+                    color: #fff !important;
                 }
 
                 .summary-total small {
                     display: block;
-                    font-size: 9px;
-                    color: #a1a1aa;
+                    font-size: 10px;
+                    color: #e5e5e5 !important;
+                    font-weight: 700;
                 }
 
                 .summary-total strong {
                     font-size: 17px;
                     font-weight: 900;
+                    color: #fff !important;
                 }
 
                 .summary-total strong small {
                     display: inline;
-                    color: #a1a1aa;
+                    color: #e5e5e5 !important;
                 }
+
+                /* ==================== PAGE SEPARATOR ==================== */
 
                 .page-separator {
                     display: flex;
                     align-items: center;
                     gap: 10px;
                     margin: 22px 0;
-                    color: #a1a1aa;
+                    color: #000;
                 }
 
                 .page-separator span {
-                    height: 1px;
-                    background: #e4e4e7;
+                    height: 1.5px;
+                    background: #000;
                     flex: 1;
                 }
 
                 .page-separator i {
                     font-size: 14px;
+                    color: #000 !important;
                 }
+
+                /* ==================== LABELS ==================== */
 
                 .labels-grid {
                     display: grid;
@@ -1097,7 +1205,7 @@ const handlePrint = () => {
                 }
 
                 .label-card {
-                    border: 1px solid #18181b;
+                    border: 1.5px solid #000;
                     border-radius: 12px;
                     overflow: hidden;
                     page-break-inside: avoid;
@@ -1109,8 +1217,10 @@ const handlePrint = () => {
                     justify-content: space-between;
                     align-items: center;
                     padding: 12px;
-                    background: #18181b;
-                    color: white;
+                    background: #000 !important;
+                    color: #fff !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .label-brand {
@@ -1122,24 +1232,36 @@ const handlePrint = () => {
                 .mini-logo {
                     width: 28px;
                     height: 28px;
-                    border: 1px solid rgba(255,255,255,.35);
+                    border: 1px solid rgba(255,255,255,.5);
                     border-radius: 7px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    color: #fff !important;
+                }
+
+                .mini-logo i {
+                    color: #fff !important;
+                }
+
+                .mini-logo img {
+                    filter: brightness(0) invert(1);
                 }
 
                 .label-brand strong {
                     display: block;
                     font-size: 13px;
+                    color: #fff !important;
+                    font-weight: 900;
                 }
 
                 .label-brand span {
                     display: block;
-                    font-size: 8px;
+                    font-size: 9px;
                     letter-spacing: 1px;
-                    color: #a1a1aa;
+                    color: #e5e5e5 !important;
                     direction: ltr;
+                    font-weight: 700;
                 }
 
                 .label-number {
@@ -1148,13 +1270,16 @@ const handlePrint = () => {
 
                 .label-number small {
                     display: block;
-                    font-size: 8px;
-                    color: #a1a1aa;
+                    font-size: 9px;
+                    color: #e5e5e5 !important;
                     direction: ltr;
+                    font-weight: 700;
                 }
 
                 .label-number strong {
                     font-size: 16px;
+                    color: #fff !important;
+                    font-weight: 900;
                 }
 
                 .label-route {
@@ -1165,44 +1290,53 @@ const handlePrint = () => {
                     display: flex;
                     align-items: center;
                     gap: 7px;
-                    color: #71717a;
-                    font-size: 10px;
+                    color: #000;
+                    font-size: 11px;
                     margin-bottom: 9px;
+                    font-weight: 800;
                 }
 
                 .route-title i {
                     font-size: 15px;
-                    color: #18181b;
+                    color: #000 !important;
                 }
 
                 .route-line {
                     width: 22px;
-                    height: 1px;
-                    background: #d4d4d8;
+                    height: 1.5px;
+                    background: #000;
                 }
 
                 .receiver-name {
                     font-size: 18px;
                     font-weight: 900;
                     margin-bottom: 3px;
+                    color: #000 !important;
                 }
 
                 .receiver-phone {
-                    font-size: 11px;
-                    color: #52525b;
+                    font-size: 12px;
+                    color: #000 !important;
                     margin-bottom: 10px;
+                    font-weight: 800;
                 }
 
                 .receiver-phone i {
                     margin-left: 4px;
+                    color: #000 !important;
                 }
 
                 .receiver-address {
                     font-size: 12px;
                     line-height: 1.8;
                     padding: 8px;
-                    background: #fafafa;
+                    background: #f2f2f2 !important;
+                    border: 1px solid #ccc;
                     border-radius: 7px;
+                    color: #000 !important;
+                    font-weight: 700;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .receiver-location {
@@ -1210,13 +1344,19 @@ const handlePrint = () => {
                     justify-content: space-between;
                     gap: 10px;
                     margin-top: 8px;
-                    font-size: 10px;
-                    color: #52525b;
+                    font-size: 12px;
+                    color: #000 !important;
+                    font-weight: 700;
+                }
+
+                .receiver-location span {
+                    color: #000 !important;
+                    font-weight: 800;
                 }
 
                 .receiver-location strong {
-                    font-weight: 800;
-                    color: #18181b;
+                    font-weight: 900;
+                    color: #000 !important;
                 }
 
                 .label-bottom {
@@ -1224,19 +1364,24 @@ const handlePrint = () => {
                     justify-content: space-between;
                     align-items: center;
                     padding: 10px 14px;
-                    border-top: 1px dashed #d4d4d8;
-                    background: #fafafa;
+                    border-top: 1px dashed #666;
+                    background: #f2f2f2 !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                 }
 
                 .label-bottom small {
                     display: block;
-                    color: #a1a1aa;
-                    font-size: 9px;
+                    color: #000 !important;
+                    font-size: 10px;
+                    font-weight: 700;
                 }
 
                 .label-bottom strong {
                     display: block;
-                    font-size: 11px;
+                    font-size: 12px;
+                    color: #000 !important;
+                    font-weight: 900;
                 }
 
                 .label-price {
@@ -1245,44 +1390,88 @@ const handlePrint = () => {
 
                 .label-price strong {
                     font-size: 13px;
+                    color: #000 !important;
                 }
 
                 .label-price em {
-                    font-size: 9px;
+                    font-size: 10px;
                     font-style: normal;
-                    color: #71717a;
+                    color: #000 !important;
+                    font-weight: 700;
                 }
+
+                /* ==================== PRINT FOOTER ==================== */
 
                 .print-footer {
                     display: block !important;
                     text-align: center;
                     margin-top: 25px;
                     padding-top: 15px;
-                    color: #a1a1aa;
+                    color: #000;
                 }
 
                 .footer-line {
-                    height: 1px;
-                    background: #e4e4e7;
+                    height: 1.5px;
+                    background: #000;
                     margin-bottom: 10px;
                 }
 
                 .print-footer strong {
                     display: block;
-                    font-size: 12px;
-                    color: #52525b;
+                    font-size: 13px;
+                    color: #000;
+                    font-weight: 900;
                 }
 
                 .print-footer span,
                 .print-footer small {
                     display: block;
-                    font-size: 9px;
+                    font-size: 10px;
                     margin-top: 2px;
+                    color: #000;
+                    font-weight: 700;
                 }
 
+                /* ==================== PRINT MEDIA ==================== */
+
                 @media print {
+
+                    * {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                        color-adjust: exact !important;
+                    }
+
+                    body {
+                        color: #000 !important;
+                    }
+
                     .order-card {
                         box-shadow: none;
+                    }
+
+                    .products-table thead,
+                    .products-table th {
+                        background: #000 !important;
+                        color: #fff !important;
+                    }
+
+                    .summary-total,
+                    .label-top {
+                        background: #000 !important;
+                        color: #fff !important;
+                    }
+
+                    .info-icon,
+                    .thank-icon {
+                        background: #000 !important;
+                        color: #fff !important;
+                    }
+
+                    .products-table tbody tr:nth-child(even) td,
+                    .receiver-address,
+                    .label-bottom {
+                        background: #f2f2f2 !important;
                     }
                 }
 
@@ -2383,7 +2572,7 @@ onMounted(() => {
     margin-top: 9px;
 
     color: #52525b;
-    font-size: 2px;
+    font-size: 12px;
 }
 
 .receiver-location strong {

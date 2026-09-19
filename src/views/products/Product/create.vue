@@ -3,12 +3,8 @@
     <!-- دکمه‌های مرحله‌ای -->
     <div class="step-buttons d-flex flex-wrap align-items-center mb-4">
       <template v-for="(step, index) in steps" :key="index">
-        <button
-          class="btn btn-primary d-flex align-items-end me-2 mb-2 step-btn"
-          :class="{ active: currentStep === index }"
-          :disabled="!step.enabled"
-          @click="currentStep = index"
-        >
+        <button class="btn btn-primary d-flex align-items-end me-2 mb-2 step-btn"
+          :class="{ active: currentStep === index }" :disabled="!step.enabled" @click="currentStep = index">
           <i :class="step.icon" class="me-1"></i>
           {{ step.label }}
           <span v-if="step.completed" class="ms-1 text-success">&#10003;</span>
@@ -48,12 +44,8 @@
 
             <div class="col-md-12 mb-3">
               <label class="form-label">دسته‌بندی‌ها</label>
-              <Treeselect
-                v-model="form.categories"
-                :multiple="true"
-                :options="categoryOptions"
-                :normalizer="normalizer"
-              />
+              <Treeselect v-model="form.categories" :multiple="true" :options="categoryOptions"
+                :normalizer="normalizer" />
               <span v-if="errors.step1.categories" class="text-danger">{{ errors.step1.categories[0] }}</span>
             </div>
 
@@ -86,15 +78,8 @@
 
             <div class="col-md-12 mb-3">
               <label class="form-label">تصاویر</label>
-              <VueFileAgent
-                @select="imagesLoaded"
-                @beforedelete="imagesRemoved"
-                :multiple="true"
-                accept=".jpg,.png,.webp"
-                theme="grid"
-                deletable
-                sortable
-              />
+              <VueFileAgent @select="imagesLoaded" @beforedelete="imagesRemoved" :multiple="true"
+                accept=".jpg,.png,.webp" theme="grid" deletable sortable />
               <span v-if="errors.step1.images" class="text-danger">{{ errors.step1.images[0] }}</span>
             </div>
           </div>
@@ -129,29 +114,15 @@
 
             <div class="col-md-12 mb-3">
               <label class="form-label">تصویر اصلی</label>
-              <VueFileAgent
-                @select="imageLoaded"
-                @beforedelete="imageRemoved"
-                :maxFiles="1"
-                accept=".jpg,.png"
-                theme="grid"
-                deletable
-                sortable
-              />
+              <VueFileAgent @select="imageLoaded" @beforedelete="imageRemoved" :maxFiles="1" accept=".jpg,.png"
+                theme="grid" deletable sortable />
               <span v-if="errors.step1.main_image" class="text-danger">{{ errors.step1.main_image[0] }}</span>
             </div>
 
             <div class="col-md-12 mb-3">
               <label class="form-label">ویدئو</label>
-              <VueFileAgent
-                @select="videoLoaded"
-                @beforedelete="videoRemoved"
-                :maxFiles="1"
-                accept=".mp4,.mov,.avi"
-                theme="grid"
-                deletable
-                sortable
-              />
+              <VueFileAgent @select="videoLoaded" @beforedelete="videoRemoved" :maxFiles="1" accept=".mp4,.mov,.avi"
+                theme="grid" deletable sortable />
               <span v-if="errors.step1.video" class="text-danger">{{ errors.step1.video[0] }}</span>
             </div>
           </div>
@@ -190,24 +161,15 @@
         <div class="row formSetp2">
           <div class="col-md-12 mb-3">
             <label>ویژگی‌ها:</label>
-            <Treeselect
-              v-model="selectedAttibutes"
-              :multiple="true"
-              :options="attributes"
-              :normalizer="attributeNormalizer"
-            />
+            <Treeselect v-model="selectedAttibutes" :multiple="true" :options="attributes"
+              :normalizer="attributeNormalizer" />
           </div>
 
           <template v-for="attributeId in selectedAttibutes" :key="attributeId">
             <div class="col-md-12 mb-3">
               <label>انتخاب {{ attrName(attributeId) }}:</label>
-              <Treeselect
-                :valueFormat="'object'"
-                v-model="attributeValue[attributeId]"
-                :multiple="true"
-                :options="attributeOptionsFor(attributeId)"
-                :normalizer="attributeValuesNormalizer"
-              />
+              <Treeselect :valueFormat="'object'" v-model="attributeValue[attributeId]" :multiple="true"
+                :options="attributeOptionsFor(attributeId)" :normalizer="attributeValuesNormalizer" />
             </div>
           </template>
         </div>
@@ -221,6 +183,7 @@
                 <th v-for="attributeId in attributesWithValues" :key="attributeId">
                   {{ attrName(attributeId) }}
                 </th>
+                <th>راهنمای جمع آوری</th>
                 <th>SKU</th>
                 <th>قیمت</th>
                 <th>موجودی</th>
@@ -231,6 +194,7 @@
                 <td v-for="(AV, idx) in variant.values" :key="idx">
                   {{ AV ? AV.value : '' }}
                 </td>
+                <td><input v-model="variant.admin_note" class="form-control" /></td>
                 <td><input v-model="variant.sku" class="form-control" /></td>
                 <td><input v-model="variant.price" type="number" class="form-control" /></td>
                 <td><input v-model="variant.stock" type="number" class="form-control" /></td>
@@ -241,22 +205,13 @@
       </form>
 
       <div class="d-flex gap-2 mt-3">
-        <button
-          class="btn btn-primary"
-          @click="saveStep2"
-          :disabled="!variantCombinations.length || loading"
-        >
+        <button class="btn btn-primary" @click="saveStep2" :disabled="!variantCombinations.length || loading">
           <span v-if="loading" class="spinner-border spinner-border-sm me-1"></span>
           <i v-else class="bi bi-save2"></i>
           <span class="mx-1">ذخیره مرحله دوم</span>
         </button>
 
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          @click="skipStep2"
-          :disabled="loading"
-        >
+        <button type="button" class="btn btn-outline-secondary" @click="skipStep2" :disabled="loading">
           <i class="bi bi-skip-forward"></i>
           <span class="mx-1">رد شدن از این مرحله</span>
         </button>
@@ -273,35 +228,21 @@
         <form>
           <div class="col-md-12 mb-3">
             <label>مشخصات:</label>
-            <Treeselect
-              :valueFormat="'object'"
-              v-model="selectedSpecification"
-              :multiple="true"
-              :options="specification"
-              :normalizer="specificationNormalizer"
-            />
+            <Treeselect :valueFormat="'object'" v-model="selectedSpecification" :multiple="true"
+              :options="specification" :normalizer="specificationNormalizer" />
           </div>
 
           <template v-for="ss in selectedSpecification" :key="ss.id">
             <div class="col-md-12 mb-3">
               <label>انتخاب {{ ss.title }}:</label>
-              <Treeselect
-                :valueFormat="'object'"
-                v-model="selectedSpecificationValues[ss.id]"
-                :multiple="true"
-                :options="ss.values"
-                :normalizer="attributeValuesNormalizer"
-              />
+              <Treeselect :valueFormat="'object'" v-model="selectedSpecificationValues[ss.id]" :multiple="true"
+                :options="ss.values" :normalizer="attributeValuesNormalizer" />
             </div>
           </template>
         </form>
       </div>
 
-      <button
-        class="btn btn-primary mt-3"
-        @click="saveStep3"
-        :disabled="!selectedSpecification.length || loading"
-      >
+      <button class="btn btn-primary mt-3" @click="saveStep3" :disabled="!selectedSpecification.length || loading">
         <span v-if="loading" class="spinner-border spinner-border-sm me-1"></span>
         <i v-else class="bi bi-save2"></i>
         <span class="mx-1">ذخیره مرحله سوم</span>
@@ -466,6 +407,7 @@ async function generateCombinations() {
       return {
         id,
         sku: '',
+        admin_note: '',
         price: product.value ? product.value.price : '',
         stock: product.value ? product.value.stock : '',
         values: values.map((v) => ({ id: v.id, value: v.value })),
@@ -523,6 +465,7 @@ async function saveStep2() {
   const formData = new FormData()
   variantCombinations.value.forEach((v, index) => {
     formData.append(`variants[${index}][sku]`, v.sku)
+    formData.append(`variants[${index}][admin_note]`, v.admin_note)
     formData.append(`variants[${index}][price]`, v.price)
     formData.append(`variants[${index}][stock]`, v.stock ?? 0)
     v.values.forEach((AV) => {
