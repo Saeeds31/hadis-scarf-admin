@@ -328,7 +328,17 @@
                                 </div>
 
                             </div>
+                            <!-- USER NOTE -->
+                            <div v-if="order.user_note" class="user-note-box">
+                                <div class="user-note-head">
+                                    <i class="bi bi-chat-left-text-fill"></i>
+                                    <span>یادداشت مشتری</span>
+                                </div>
 
+                                <div class="user-note-content">
+                                    {{ order.user_note }}
+                                </div>
+                            </div>
                         </div>
 
                         <div v-if="index < orders.length - 1" class="page-separator">
@@ -1431,11 +1441,57 @@ const handlePrint = () => {
                     color: #000;
                     font-weight: 700;
                 }
+/* ==================== USER NOTE ==================== */
 
+.user-note-box {
+    margin-top: 16px;
+    padding: 12px 14px;
+
+    background: #fffbeb !important;
+    border: 1.5px solid #000;
+    border-radius: 10px;
+
+    page-break-inside: avoid;
+    break-inside: avoid;
+
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+.user-note-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+
+    border-bottom: 1px dashed #000;
+
+    color: #000 !important;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.user-note-head i {
+    color: #000 !important;
+    font-size: 13px;
+}
+
+.user-note-content {
+    color: #000 !important;
+    font-size: 12px;
+    line-height: 1.9;
+    font-weight: 800;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
                 /* ==================== PRINT MEDIA ==================== */
 
                 @media print {
-
+   .user-note-box {
+        background: #fffbeb !important;
+    }
                     * {
                         -webkit-print-color-adjust: exact !important;
                         print-color-adjust: exact !important;
@@ -2617,6 +2673,46 @@ onMounted(() => {
     font-style: normal;
 }
 
+/* =========================================================
+   USER NOTE
+========================================================= */
+
+.user-note-box {
+    margin-top: 18px;
+    padding: 14px 16px;
+
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+}
+
+.user-note-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+
+    border-bottom: 1px dashed #fcd34d;
+
+    color: #b45309;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.user-note-head i {
+    font-size: 13px;
+}
+
+.user-note-content {
+    color: #78350f;
+    font-size: 13px;
+    line-height: 1.9;
+    font-weight: 700;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 
 /* =========================================================
    RESPONSIVE
