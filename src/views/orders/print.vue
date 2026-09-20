@@ -294,7 +294,7 @@
 
                                     <div class="summary-row discount-row">
                                         <span>
-                                            تخفیف
+                                            تخفیف محصول
                                             <i class="bi bi-tag-fill"></i>
                                         </span>
 
@@ -304,7 +304,18 @@
                                             <small>تومان</small>
                                         </strong>
                                     </div>
+                                    <div v-if="order.club_volume_discount" class="summary-row discount-row">
+                                        <span>
+                                            تخفیف باشگاه مشتریان
+                                            <i class="bi bi-tag-fill"></i>
+                                        </span>
 
+                                        <strong>
+                                            -
+                                            {{ Number(order.club_volume_discount).toLocaleString('fa-IR') }}
+                                            <small>تومان</small>
+                                        </strong>
+                                    </div>
                                     <div class="summary-row">
                                         <span>هزینه ارسال</span>
                                         <strong>

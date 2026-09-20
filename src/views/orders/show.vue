@@ -19,7 +19,8 @@
                         <li><strong>روش پرداخت:</strong> {{ paymentMethods[order.payment_method] }}</li>
                         <li v-if="order.payment_method == 'card_transfer'"><strong>وضعیت رسید:</strong>
                             {{ order.card_transfer_receipt?.status == "approved" ?
-                                "تایید شده" : order.card_transfer_receipt?.status == "rejected" ? "رد شده" : "در حال بررسی" }}</li>
+                                "تایید شده" : order.card_transfer_receipt?.status == "rejected" ? "رد شده" : "در حال بررسی"
+                            }}</li>
                     </ul>
                 </b-card>
             </b-col>
@@ -27,8 +28,10 @@
             <b-col cols="12" lg="4">
                 <b-card header="خلاصه سفارش">
                     <ul class="list-unstyled mb-0">
+                        <li><strong>تعداد اقلام سفارش:</strong> {{ order.items ? allQunatity : "-" }} عدد</li>
                         <li><strong>جمع جزء:</strong> {{ formatPrice(order.subtotal) }}</li>
-                        <li><strong>تخفیف:</strong> {{ formatPrice(order.discount_amount) }}</li>
+                        <li><strong>تخفیف محصول:</strong> {{ formatPrice(order.discount_amount) }}</li>
+                        <li><strong>تخفیف باشگاه مشتریان:</strong> {{ formatPrice(order.club_volume_discount) }}</li>
                         <li><strong>هزینه ارسال:</strong> {{ formatPrice(order.shipping_cost) }}</li>
                         <li class="mt-2">
                             <strong class="h5">جمع کل:</strong>
@@ -93,7 +96,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, computed } from "vue"
 import axios from "axios"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
@@ -142,7 +145,11 @@ const fetchOrder = async () => {
         toast.error("خطا در گرفتن اطلاعات سفارش")
     }
 }
-
+const allQunatity = computed(() => {
+    return order.value.items.reduce((a, b) => {
+        return a + b.quantity
+    }, 0)
+})
 const updateOrder = async () => {
     try {
         let fd = new FormData();
