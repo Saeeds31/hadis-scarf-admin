@@ -379,6 +379,11 @@ const routes = [
     name: "orders-card-transfer-receipts",
     component: () => import("@/views/CardToCard/list.vue"),
   },
+    {
+    path: "/orders/problematic",
+    name: "orders-problematic",
+    component: () => import("@/views/orders/problematic.vue"),
+  },
   
   { path: "/:pathMatch(.*)*", redirect: "/dashboard" },
 ];

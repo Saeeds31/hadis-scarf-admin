@@ -325,6 +325,12 @@ const menuItems = ref([
         link: "/orders/create",
         icon: "bi-plus-square"
       },
+        {
+        name: "سفارشات خطادار",
+        permissions: ['order_view'],
+        link: "/orders/problematic",
+        icon: "bi-basket"
+      },
       {
         name: "رسیدهای کارت به کارت",
         permissions: ['cardtocard_view'],
